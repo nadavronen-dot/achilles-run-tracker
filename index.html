@@ -1834,23 +1834,32 @@
 
         <!-- Manual quick entry fallback -->
         <div id="garmin-manual-box" style="display: none; background: #fff; border: 1px solid var(--slate-300); border-radius: 12px; padding: 18px; margin-bottom: 20px;">
-          <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 12px;">הזנה מהירה של סיכום השעון</h4>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 14px;">
+          <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 8px;">הזנה מהירה של נתוני השעון</h4>
+          <div style="display: flex; gap: 10px; margin-bottom: 14px;">
+            <label style="cursor:pointer; display:flex; align-items:center; gap:6px; font-weight:700; font-size:0.9rem;">
+              <input type="radio" name="man-act-type" value="spin" checked onchange="toggleManualFormType(this.value)"> 🚴 ספינינג (זמן ודופק בלבד)
+            </label>
+            <label style="cursor:pointer; display:flex; align-items:center; gap:6px; font-weight:700; font-size:0.9rem; margin-right: 14px;">
+              <input type="radio" name="man-act-type" value="run" onchange="toggleManualFormType(this.value)"> 🏃 ריצה
+            </label>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 14px;">
             <div>
+              <label class="form-label" style="font-size: 0.8rem;">משך זמן (דקות):</label>
+              <input type="number" id="man-time" class="workout-notes-input" placeholder="למשל 45" value="45">
+            </div>
+            <div>
+              <label class="form-label" style="font-size: 0.8rem;">דופק ממוצע (bpm):</label>
+              <input type="number" id="man-hr" class="workout-notes-input" placeholder="למשל 135" value="135">
+            </div>
+            <div id="man-dist-wrap" style="display: none;">
               <label class="form-label" style="font-size: 0.8rem;">מרחק (ק"מ):</label>
-              <input type="number" step="0.01" id="man-dist" class="workout-notes-input" placeholder="למשל 5.8">
+              <input type="number" step="0.01" id="man-dist" class="workout-notes-input" placeholder="למשל 5.5">
             </div>
-            <div>
-              <label class="form-label" style="font-size: 0.8rem;">זמן (דקות):</label>
-              <input type="number" id="man-time" class="workout-notes-input" placeholder="למשל 34">
-            </div>
-            <div>
-              <label class="form-label" style="font-size: 0.8rem;">קדנס ממוצע (SPM):</label>
+            <div id="man-cadence-wrap" style="display: none;">
+              <label class="form-label" style="font-size: 0.8rem;">קדנס ריצה (SPM):</label>
               <input type="number" id="man-cadence" class="workout-notes-input" placeholder="למשל 175">
-            </div>
-            <div>
-              <label class="form-label" style="font-size: 0.8rem;">דופק ממוצע:</label>
-              <input type="number" id="man-hr" class="workout-notes-input" placeholder="למשל 145">
             </div>
           </div>
           <button class="btn btn-primary" onclick="saveManualGarminToToday()">שמור ושייך לאימון היום</button>
@@ -2433,25 +2442,43 @@
       const card = document.getElementById('garmin-activity-result');
       if (!card) return;
 
-      // Check if local storage or file has last activity
       const savedGarmin = localStorage.getItem('achilles_garmin_latest');
       if (savedGarmin) {
         try { lastGarminActivity = JSON.parse(savedGarmin); } catch(e){}
       }
 
+      const isCycling = lastGarminActivity.activityType !== 'running';
+
       document.getElementById('garmin-act-name').textContent = lastGarminActivity.activityName;
-      document.getElementById('garmin-act-type').textContent = lastGarminActivity.activityType === 'running' ? 'ריצה' : 'ספינינג / אופניים';
+      document.getElementById('garmin-act-type').textContent = isCycling ? 'ספינינג / אופניים' : 'ריצה';
       document.getElementById('garmin-act-date').textContent = lastGarminActivity.date || 'היום';
-      document.getElementById('garmin-act-dist').textContent = lastGarminActivity.distanceKm + ' ק"מ';
-      document.getElementById('garmin-act-time').textContent = lastGarminActivity.durationFormatted;
-      document.getElementById('garmin-act-pace').textContent = lastGarminActivity.pace;
-      document.getElementById('garmin-act-hr').textContent = (lastGarminActivity.avgHr || 145) + ' bpm';
+      
+      // For cycling: distance and pace are irrelevant/unmeasured
+      if (isCycling) {
+        document.getElementById('garmin-act-dist').textContent = 'לפי זמן';
+        document.getElementById('garmin-act-pace').textContent = 'ישיבה רציפה';
+      } else {
+        document.getElementById('garmin-act-dist').textContent = (lastGarminActivity.distanceKm || '0') + ' ק"מ';
+        document.getElementById('garmin-act-pace').textContent = lastGarminActivity.pace || '-';
+      }
+
+      document.getElementById('garmin-act-time').textContent = lastGarminActivity.durationFormatted || '45:00';
+      document.getElementById('garmin-act-hr').textContent = (lastGarminActivity.avgHr || 135) + ' bpm';
       
       const cadBadge = document.getElementById('garmin-act-cadence-badge');
-      if (lastGarminActivity.avgCadence) {
-        cadBadge.textContent = 'קדנס: ' + lastGarminActivity.avgCadence + ' SPM ✓';
+      if (isCycling) {
+        cadBadge.style.background = '#e0e7ff';
+        cadBadge.style.color = '#3730a3';
+        cadBadge.style.borderColor = '#818cf8';
+        cadBadge.textContent = 'דופק מטרה: Zone 2 אירובי ✓';
+        document.getElementById('garmin-act-feedback').textContent = 'ספינינג מותאם אכילס: המיקוד הבלעדי הוא משך הזמן ושהייה בטווח דופק Zone 2 בישיבה מלאה עם פדל במרכז כף הרגל. אין צורך במדידת קדנס או מרחק.';
+      } else {
+        cadBadge.style.background = '#d1fae5';
+        cadBadge.style.color = '#065f46';
+        cadBadge.style.borderColor = '#10b981';
+        cadBadge.textContent = lastGarminActivity.avgCadence ? 'קדנס ריצה: ' + lastGarminActivity.avgCadence + ' SPM ✓' : 'ריצה הושלמה';
+        document.getElementById('garmin-act-feedback').textContent = lastGarminActivity.cadenceFeedback || 'ריצה הושלמה בהצלחה.';
       }
-      document.getElementById('garmin-act-feedback').textContent = lastGarminActivity.cadenceFeedback || '';
 
       card.style.display = 'block';
     }
@@ -2471,7 +2498,11 @@
 
       if (targetWk) {
         targetWk.status = 'completed';
-        targetWk.notes = `סונכרן מ-Garmin: ${lastGarminActivity.distanceKm} ק"מ ב-${lastGarminActivity.durationFormatted} (${lastGarminActivity.pace}). קדנס ממוצע: ${lastGarminActivity.avgCadence || '-'} SPM. דופק: ${lastGarminActivity.avgHr || '-'} bpm.`;
+        if (lastGarminActivity.activityType !== 'running') {
+          targetWk.notes = `ספינינג מ-Garmin: ${lastGarminActivity.durationFormatted} דק' רכיבה. דופק ממוצע: ${lastGarminActivity.avgHr || '-'} bpm (ישיבה מלאה Zone 2).`;
+        } else {
+          targetWk.notes = `ריצה מ-Garmin: ${lastGarminActivity.distanceKm} ק"מ ב-${lastGarminActivity.durationFormatted} (${lastGarminActivity.pace}). קדנס: ${lastGarminActivity.avgCadence || '-'} SPM. דופק: ${lastGarminActivity.avgHr || '-'} bpm.`;
+        }
         saveState();
         renderWorkouts();
         renderTodayHero();
@@ -2480,7 +2511,43 @@
       }
     }
 
+    
+    function toggleManualFormType(type) {
+      const isRun = type === 'run';
+      document.getElementById('man-dist-wrap').style.display = isRun ? 'block' : 'none';
+      document.getElementById('man-cadence-wrap').style.display = isRun ? 'block' : 'none';
+      if (!isRun) {
+        document.getElementById('man-time').value = '45';
+        document.getElementById('man-hr').value = '135';
+      }
+    }
+
     function saveManualGarminToToday() {
+      const actType = document.querySelector('input[name="man-act-type"]:checked')?.value || 'spin';
+      const isRun = actType === 'run';
+      const time = document.getElementById('man-time').value || (isRun ? "35" : "45");
+      const hr = document.getElementById('man-hr').value || "135";
+      const dist = document.getElementById('man-dist').value;
+      const cadence = document.getElementById('man-cadence').value;
+
+      lastGarminActivity = {
+        activityName: isRun ? "אימון ריצה (שעון)" : "אימון ספינינג Zone 2 (שעון)",
+        activityType: isRun ? "running" : "cycling",
+        date: new Date().toLocaleDateString('he-IL'),
+        distanceKm: isRun ? (parseFloat(dist) || 5.0) : 0,
+        durationFormatted: time + ":00",
+        pace: isRun ? "5:50 דק'/ק\"מ" : "ישיבה",
+        avgHr: parseInt(hr) || 135,
+        avgCadence: isRun && cadence ? parseInt(cadence) : null,
+        cadenceStatus: isRun ? "checked" : "cycling_hr_focus",
+        cadenceFeedback: isRun ? (cadence ? `קדנס ${cadence} SPM נרשם.` : '') : 'ספינינג: עבודה אירובית מבוססת זמן ודופק בישיבה מלאה.'
+      };
+
+      localStorage.setItem('achilles_garmin_latest', JSON.stringify(lastGarminActivity));
+      assignGarminToTodayWorkout();
+    }
+
+    function _old_saveManualGarminToToday() {
       const dist = document.getElementById('man-dist').value;
       const time = document.getElementById('man-time').value;
       const cadence = document.getElementById('man-cadence').value;

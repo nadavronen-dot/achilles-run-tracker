@@ -85,20 +85,29 @@ def fetch_latest_activity(email=None, password=None):
             pace_sec = int(sec_per_km % 60)
             pace_formatted = f"{pace_min}:{pace_sec:02d} דק'/ק\"מ"
 
-        # Cadence Clinical Assessment (170-180 SPM target for Achilles tendon protection)
-        cadence_status = "unknown"
+        # Assessment based on activity type:
+        is_cycling = "cycl" in activity_type or "bike" in activity_type or "spinning" in activity_type
+        is_running = "run" in activity_type
+        
+        cadence_status = "not_applicable"
         cadence_feedback = ""
-        if avg_cadence:
+
+        if is_cycling:
+            # For indoor bike / spinning: distance and cadence are not measured
+            avg_cadence = None
+            cadence_status = "cycling_hr_focus"
+            cadence_feedback = "ספינינג / אופניים: אין צורך במדידת קדנס או מרחק. המיקוד הוא זמן הרכיבה ושהייה בטווח דופק Zone 2 בישיבה מלאה עם פדל במרכז הרגל."
+        elif is_running and avg_cadence:
             avg_cadence = int(round(avg_cadence))
             if avg_cadence >= 170 and avg_cadence <= 185:
                 cadence_status = "optimal"
-                cadence_feedback = f"מצוין! קדנס ממוצע {avg_cadence} צעדים/דקה נמצא בטווח האופטימלי (170–180) להפחתת עומס בלימה מאכילס."
+                cadence_feedback = f"מצוין! קדנס ריצה ממוצע {avg_cadence} צעדים/דקה נמצא בטווח האופטימלי (170–180) להפחתת עומס בלימה מאכילס."
             elif avg_cadence < 170:
                 cadence_status = "low"
-                cadence_feedback = f"קדנס ממוצע {avg_cadence} צעדים/דקה. מומלץ לקצר מעט את אורך הצעד ולהגביר קצב ל-175 SPM להורדת מומנט כפיפה בקרסול."
+                cadence_feedback = f"קדנס ריצה {avg_cadence} צעדים/דקה. מומלץ לקצר מעט צעד ל-175 SPM להורדת עומס מהגיד."
             else:
                 cadence_status = "high"
-                cadence_feedback = f"קדנס ממוצע {avg_cadence} צעדים/דקה. קצב צעדים מהיר מאוד."
+                cadence_feedback = f"קדנס ריצה מהיר {avg_cadence} צעדים/דקה."
 
         parsed = {
             "success": True,
