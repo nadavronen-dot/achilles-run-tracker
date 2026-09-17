@@ -1,0 +1,2872 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ניהול עומסים, תוכנית אימונים וכוח FBW | מירוץ בוז'ולה 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #dbeafe;
+      --success: #10b981;
+      --success-dark: #059669;
+      --success-light: #d1fae5;
+      --warning: #f59e0b;
+      --warning-dark: #d97706;
+      --warning-light: #fef3c7;
+      --danger: #ef4444;
+      --danger-dark: #dc2626;
+      --danger-light: #fee2e2;
+      --slate-50: #f8fafc;
+      --slate-100: #f1f5f9;
+      --slate-200: #e2e8f0;
+      --slate-300: #cbd5e1;
+      --slate-600: #475569;
+      --slate-700: #334155;
+      --slate-800: #1e293b;
+      --slate-900: #0f172a;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --card-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background-color: #f8fafc;
+      color: var(--slate-800);
+      line-height: 1.6;
+      direction: rtl;
+      padding-bottom: 60px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: white;
+      padding: 24px 0 18px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .badge-race {
+      background: rgba(239, 68, 68, 0.18);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .header-title h1 {
+      font-size: 1.65rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+    }
+
+    .header-title p {
+      font-size: 0.92rem;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    .countdown-wrapper {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      backdrop-filter: blur(8px);
+    }
+
+    .countdown-boxes {
+      display: flex;
+      gap: 8px;
+    }
+
+    .countdown-box {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 4px 8px;
+      min-width: 52px;
+      text-align: center;
+    }
+
+    .countdown-val {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #38bdf8;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.1;
+    }
+
+    .countdown-label {
+      font-size: 0.68rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+
+    .status-strip {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 10px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .status-pill.green {
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid #10b981;
+      color: #34d399;
+    }
+
+    .status-pill.yellow {
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid #f59e0b;
+      color: #fbbf24;
+    }
+
+    .status-pill.red {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #f87171;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .green .status-dot { background-color: #10b981; box-shadow: 0 0 10px #10b981; }
+    .yellow .status-dot { background-color: #f59e0b; box-shadow: 0 0 10px #f59e0b; }
+    .red .status-dot { background-color: #ef4444; box-shadow: 0 0 10px #ef4444; }
+
+    .phase-pill {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #7dd3fc;
+      font-size: 0.84rem;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+
+    .tabs-nav {
+      display: flex;
+      gap: 8px;
+      border-bottom: 2px solid var(--slate-200);
+      margin: 20px 0 18px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 10px 16px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--slate-600);
+      cursor: pointer;
+      border-radius: 8px 8px 0 0;
+      position: relative;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+      color: var(--primary);
+      background: var(--slate-100);
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      background: white;
+      border-bottom: 3px solid var(--primary);
+    }
+
+    .tab-btn .badge-counter {
+      background: var(--slate-200);
+      color: var(--slate-700);
+      font-size: 0.75rem;
+      padding: 2px 7px;
+      border-radius: 9999px;
+    }
+
+    .tab-btn.active .badge-counter {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+      animation: fadeIn 0.25s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      border: 1px solid var(--slate-200);
+      box-shadow: var(--card-shadow);
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--slate-100);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--slate-900);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .alert {
+      padding: 14px 18px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      font-size: 0.92rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .alert-green {
+      background-color: var(--success-light);
+      border: 1px solid #86efac;
+      color: #065f46;
+    }
+
+    .alert-yellow {
+      background-color: var(--warning-light);
+      border: 1px solid #fde68a;
+      color: #92400e;
+    }
+
+    .alert-red {
+      background-color: var(--danger-light);
+      border: 1px solid #fca5a5;
+      color: #991b1b;
+    }
+
+    .alert-icon {
+      font-size: 1.3rem;
+      line-height: 1;
+    }
+
+    .week-filter-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .week-filter-btn {
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border: 1px solid var(--slate-300);
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .week-filter-btn:hover {
+      background: var(--slate-100);
+    }
+
+    .week-filter-btn.active {
+      background: var(--slate-900);
+      color: white;
+      border-color: var(--slate-900);
+    }
+
+    .week-section {
+      margin-bottom: 28px;
+    }
+
+    .week-header-banner {
+      background: linear-gradient(to left, var(--slate-100), white);
+      border-right: 4px solid var(--primary);
+      padding: 12px 18px;
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .week-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--slate-800);
+    }
+
+    .week-dates {
+      font-size: 0.84rem;
+      color: var(--slate-600);
+    }
+
+    .workouts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .workout-card {
+      background: white;
+      border: 1px solid var(--slate-200);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+
+    .workout-card:hover {
+      box-shadow: 0 6px 12px rgba(0,0,0,0.06);
+      border-color: var(--slate-300);
+    }
+
+    .workout-card.completed {
+      border-color: #86efac;
+      background: #f0fdf4;
+    }
+
+    .workout-card.modified {
+      border-color: #fde68a;
+      background: #fffbeb;
+    }
+
+    .workout-card.skipped {
+      border-color: #fca5a5;
+      background: #fef2f2;
+      opacity: 0.75;
+    }
+
+    .workout-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .workout-day {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--slate-900);
+    }
+
+    .workout-date-small {
+      font-size: 0.8rem;
+      color: var(--slate-600);
+    }
+
+    .workout-type-pill {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .pill-spin { background: #e0e7ff; color: #3730a3; }
+    .pill-run { background: #dcfce7; color: #166534; }
+    .pill-race { background: #fee2e2; color: #991b1b; }
+    .pill-rest { background: #f1f5f9; color: #475569; }
+
+    .workout-title {
+      font-weight: 700;
+      font-size: 0.98rem;
+      color: var(--slate-900);
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    .workout-desc {
+      font-size: 0.86rem;
+      color: var(--slate-600);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .workout-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.75rem;
+      color: #4f46e5;
+      background: #eef2ff;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    .red-override-notice {
+      background: #fee2e2;
+      border: 1px solid #fca5a5;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: #991b1b;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    .red-override-notice.active {
+      display: block;
+    }
+
+    .btn-override {
+      background: #dc2626;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 4px;
+      display: inline-block;
+    }
+
+    .status-select-wrapper {
+      margin-top: 10px;
+      display: flex;
+      gap: 4px;
+    }
+
+    .status-radio-label {
+      flex: 1;
+      text-align: center;
+      font-size: 0.74rem;
+      font-weight: 600;
+      padding: 5px 2px;
+      border-radius: 6px;
+      border: 1px solid var(--slate-300);
+      background: white;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .status-radio-label:hover {
+      background: var(--slate-100);
+    }
+
+    .status-radio-label.selected-pending {
+      background: var(--slate-100);
+      border-color: var(--slate-400);
+      color: var(--slate-700);
+    }
+
+    .status-radio-label.selected-completed {
+      background: #10b981;
+      border-color: #059669;
+      color: white;
+    }
+
+    .status-radio-label.selected-modified {
+      background: #f59e0b;
+      border-color: #d97706;
+      color: white;
+    }
+
+    .status-radio-label.selected-skipped {
+      background: #ef4444;
+      border-color: #dc2626;
+      color: white;
+    }
+
+    .workout-notes-input {
+      width: 100%;
+      border: 1px solid var(--slate-200);
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-size: 0.78rem;
+      margin-top: 8px;
+      outline: none;
+    }
+
+    .workout-notes-input:focus {
+      border-color: var(--primary);
+    }
+
+    .progress-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid var(--slate-200);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .progress-bar-container {
+      flex: 1;
+      min-width: 240px;
+    }
+
+    .progress-bar-bg {
+      background: var(--slate-200);
+      border-radius: 9999px;
+      height: 12px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      background: linear-gradient(90deg, #3b82f6, #10b981);
+      height: 100%;
+      width: 0%;
+      transition: width 0.4s ease;
+      border-radius: 9999px;
+    }
+
+    .tracker-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 860px) {
+      .tracker-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--slate-800);
+      margin-bottom: 6px;
+    }
+
+    .form-help {
+      font-size: 0.8rem;
+      color: var(--slate-600);
+      margin-top: 4px;
+    }
+
+    .range-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .range-input {
+      flex: 1;
+      height: 8px;
+      border-radius: 4px;
+      background: var(--slate-200);
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    .range-input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .range-value-badge {
+      min-width: 52px;
+      text-align: center;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      background: var(--slate-100);
+      border: 1px solid var(--slate-300);
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.92rem;
+      font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--danger);
+      cursor: pointer;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: var(--slate-200);
+      color: var(--slate-800);
+    }
+
+    .btn-secondary:hover {
+      background: var(--slate-300);
+    }
+
+    .history-table-wrapper {
+      max-height: 280px;
+      overflow-y: auto;
+      border: 1px solid var(--slate-200);
+      border-radius: 8px;
+      margin-top: 14px;
+    }
+
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .history-table th {
+      background: var(--slate-100);
+      padding: 10px 12px;
+      font-weight: 600;
+      text-align: right;
+      border-bottom: 1px solid var(--slate-200);
+      position: sticky;
+      top: 0;
+    }
+
+    .history-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--slate-100);
+    }
+
+    .btn-delete-log {
+      background: none;
+      border: none;
+      color: #ef4444;
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 2px 6px;
+    }
+
+    /* Strength Section Styling */
+    .strength-header-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .exercise-card {
+      background: white;
+      border: 1px solid var(--slate-200);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    }
+
+    .exercise-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .exercise-name {
+      font-size: 1.12rem;
+      font-weight: 800;
+      color: var(--slate-900);
+    }
+
+    .exercise-target {
+      font-size: 0.84rem;
+      color: #4f46e5;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .equipment-pill {
+      background: #f1f5f9;
+      border: 1px solid var(--slate-300);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--slate-700);
+    }
+
+    .prescription-box {
+      background: #f8fafc;
+      border-right: 4px solid var(--primary);
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--slate-800);
+    }
+
+    .exercise-cues {
+      font-size: 0.86rem;
+      color: var(--slate-600);
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .sets-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+      margin-top: 8px;
+    }
+
+    .sets-table th {
+      padding: 6px 10px;
+      background: var(--slate-100);
+      color: var(--slate-700);
+      font-weight: 600;
+      text-align: center;
+      border: 1px solid var(--slate-200);
+    }
+
+    .sets-table td {
+      padding: 6px 10px;
+      text-align: center;
+      border: 1px solid var(--slate-200);
+    }
+
+    .set-input {
+      width: 65px;
+      padding: 4px 6px;
+      border: 1px solid var(--slate-300);
+      border-radius: 6px;
+      text-align: center;
+      font-size: 0.84rem;
+      font-weight: 600;
+      outline: none;
+    }
+
+    .set-input:focus {
+      border-color: var(--primary);
+    }
+
+    /* Timers & Assist */
+    .timer-container {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: white;
+      border-radius: 20px;
+      padding: 36px 24px;
+      text-align: center;
+      box-shadow: var(--card-shadow-lg);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .timer-phase-badge {
+      display: inline-block;
+      padding: 8px 24px;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-bottom: 16px;
+      transition: all 0.3s;
+    }
+
+    .phase-running {
+      background: #10b981;
+      color: white;
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.4);
+    }
+
+    .phase-walking {
+      background: #0284c7;
+      color: white;
+      box-shadow: 0 0 25px rgba(2, 132, 199, 0.4);
+    }
+
+    .phase-idle {
+      background: #475569;
+      color: white;
+    }
+
+    .timer-digits {
+      font-size: 5rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+      margin: 10px 0 20px;
+      color: #f8fafc;
+      letter-spacing: -1px;
+    }
+
+    .timer-subinfo {
+      font-size: 1rem;
+      color: #94a3b8;
+      margin-bottom: 24px;
+    }
+
+    .timer-controls {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-timer {
+      padding: 12px 28px;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.15s, background 0.2s;
+    }
+
+    .btn-timer:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-start {
+      background: #10b981;
+      color: white;
+    }
+
+    .btn-start:hover {
+      background: #059669;
+    }
+
+    .btn-pause {
+      background: #f59e0b;
+      color: white;
+    }
+
+    .btn-reset {
+      background: #475569;
+      color: white;
+    }
+
+    .btn-skip {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+    }
+
+    .preset-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .preset-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .preset-btn:hover, .preset-btn.active {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: #38bdf8;
+      color: white;
+    }
+
+    .cadence-box {
+      background: white;
+      border: 1px solid var(--slate-200);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .cadence-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .metronome-light {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--slate-300);
+      transition: background 0.1s;
+    }
+
+    .metronome-light.flash {
+      background: #3b82f6;
+      box-shadow: 0 0 15px #3b82f6;
+    }
+
+    .cue-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .cue-card {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .cue-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--slate-900);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cue-text {
+      font-size: 0.85rem;
+      color: var(--slate-600);
+      line-height: 1.5;
+    }
+
+    .protocol-card {
+      background: white;
+      border: 1px solid var(--slate-200);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .protocol-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .badge-iso { background: #e0e7ff; color: #4338ca; }
+    .badge-hsr { background: #fef3c7; color: #b45309; }
+    .badge-bike { background: #d1fae5; color: #065f46; }
+
+    .interactive-helper-box {
+      background: var(--slate-100);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 16px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 16px 10px;
+      color: var(--slate-600);
+      font-size: 0.82rem;
+      border-top: 1px solid var(--slate-200);
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER & DASHBOARD -->
+  <header>
+    <div class="container">
+      <div class="header-top">
+        <div class="header-title">
+          <span class="badge-race">🏁 יעד תחרותי ראשי | 8 ק"מ</span>
+          <h1>מירוץ בוז'ולה ישראל 2026</h1>
+          <p>ניהול עומסים, תוכנית ריצה-ספינינג ואימוני כוח FBW מותאמים לגיד אכילס</p>
+        </div>
+
+        <div class="countdown-wrapper">
+          <div style="font-size: 0.85rem; font-weight: 600; color: #cbd5e1;">זינוק בעוד:</div>
+          <div class="countdown-boxes">
+            <div class="countdown-box">
+              <div class="countdown-val" id="cd-days">--</div>
+              <div class="countdown-label">ימים</div>
+            </div>
+            <div class="countdown-box">
+              <div class="countdown-val" id="cd-hours">--</div>
+              <div class="countdown-label">שעות</div>
+            </div>
+            <div class="countdown-box">
+              <div class="countdown-val" id="cd-minutes">--</div>
+              <div class="countdown-label">דקות</div>
+            </div>
+            <div class="countdown-box">
+              <div class="countdown-val" id="cd-seconds">--</div>
+              <div class="countdown-label">שניות</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Current Status Strip -->
+      <div class="status-strip">
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <div class="phase-pill" id="current-week-display">שבוע 1 מתוך 5: ביסוס סובלנות והפרדת עומסים</div>
+          <div class="status-pill green" id="global-status-pill">
+            <span class="status-dot"></span>
+            <span id="global-status-text">סטטוס גיד 24 שעות: תקין (Green)</span>
+          </div>
+        </div>
+        <div style="color: #94a3b8; font-size: 0.82rem;">
+          תאריך מירוץ: יום שישי, 23 באוקטובר 2026 | זינוק: 07:00
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="container">
+
+    <!-- NAVIGATION TABS -->
+    <nav class="tabs-nav" aria-label="תפריט ראשי">
+      <button class="tab-btn active" onclick="switchTab('schedule', this)">
+        📅 תוכנית 5 שבועות
+        <span class="badge-counter" id="completed-counter">0/21</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('strength', this)">
+        💪 תוכנית כוח FBW (1 & 2)
+      </button>
+      <button class="tab-btn" onclick="switchTab('tracker', this)">
+        🩺 ניטור גיד יומי (מודל 24 שעות)
+        <span class="badge-counter" id="log-counter">0 דיווחים</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('timer', this)">
+        ⏱️ עוזר Run/Walk וטיימר ריצה
+      </button>
+      <button class="tab-btn" onclick="switchTab('protocols', this)">
+        📖 מדריך תרגילים והנחיות לגיד
+      </button>
+      <button class="tab-btn" onclick="switchTab('raceday', this)">
+        🏆 אסטרטגיית יום המירוץ
+      </button>
+    </nav>
+
+    <!-- TAB 1: 5-WEEK SCHEDULE -->
+    <section id="tab-schedule" class="tab-panel active">
+      <div class="progress-card">
+        <div>
+          <div style="font-weight: 700; font-size: 1rem; color: var(--slate-900);">התקדמות כללית בתוכנית</div>
+          <div style="font-size: 0.82rem; color: var(--slate-600);" id="progress-text-detail">הושלמו 0 מתוך 21 אימונים מתוזמנים</div>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="overall-progress-bar"></div>
+          </div>
+        </div>
+        <div style="font-weight: 800; font-size: 1.15rem; color: var(--primary);" id="progress-percent">0%</div>
+      </div>
+
+      <div class="alert alert-red" id="schedule-red-banner" style="display: none;">
+        <span class="alert-icon">⚠️</span>
+        <div style="flex: 1;">
+          <strong>התרעת עומס פעילה (Red Tendon Alert):</strong>
+          הדיווח האחרון מצביע על כאב &gt; 4/10, נוקשות בוקר &gt; 20 דקות, או כאב בהליכה.
+          מומלץ להמיר את אימון הריצה הקרוב ברכיבת ספינינג נפח קלה (Zone 2) וב-4 סטים של החזקה איזומטרית ל-45 שניות.
+        </div>
+      </div>
+
+      <div class="week-filter-bar">
+        <button class="week-filter-btn active" onclick="filterWeek('all', this)">כל 5 השבועות</button>
+        <button class="week-filter-btn" onclick="filterWeek('1', this)">שבוע 1 (16–22 ספטמבר)</button>
+        <button class="week-filter-btn" onclick="filterWeek('2', this)">שבוע 2 (23–29 ספטמבר)</button>
+        <button class="week-filter-btn" onclick="filterWeek('3', this)">שבוע 3 (30 ספטמבר – 6 אוקטובר)</button>
+        <button class="week-filter-btn" onclick="filterWeek('4', this)">שבוע 4 (7–13 אוקטובר - שיא)</button>
+        <button class="week-filter-btn" onclick="filterWeek('5', this)">שבוע 5 (14–23 אוקטובר - טייפר ומירוץ)</button>
+      </div>
+
+      <div id="workouts-container"></div>
+    </section>
+
+    <!-- TAB 2: STRENGTH TRAINING (FBW 1 & FBW 2) -->
+    <section id="tab-strength" class="tab-panel">
+      <!-- Clinical & Practical Overview -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">🏋️ תוכנית אימוני כוח לכל הגוף (Full Body Workout - FBW 1 & FBW 2)</h2>
+            <div style="font-size: 0.85rem; color: var(--slate-600); margin-top: 4px;">
+              מותאמת לציוד קיים: מוט אולימפי/סטנדרטי, משקולות יד (Dumbbells), ספסל, וקטלבל
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <span class="equipment-pill">מוט</span>
+            <span class="equipment-pill">משקולות יד</span>
+            <span class="equipment-pill">ספסל</span>
+            <span class="equipment-pill">קטלבל</span>
+          </div>
+        </div>
+
+        <div style="background: #eef2ff; border-right: 4px solid #4f46e5; padding: 14px 18px; border-radius: 0 10px 10px 0; margin-bottom: 16px; font-size: 0.88rem; color: #1e1b4b; line-height: 1.6;">
+          <strong>עקרונות אימון הכוח לרצי 8 ק"מ עם טנדינופתיה של אכילס:</strong>
+          <ul style="padding-right: 18px; margin-top: 6px;">
+            <li><strong>שילוב שבועי אופטימלי:</strong> בצע 2 אימונים בשבוע (לדוגמה: <strong>FBW 1 ביום ד'</strong> לצד אימון הספינינג; <strong>FBW 2 ביום א'</strong> לצד אימון הספינינג).</li>
+            <li><strong>חלון התאוששות קולגני:</strong> ימי ד' ו-א' נבחרו בקפידה כי הם מבטיחים הפרדה של 48 שעות לפחות לפני אימון הריצה המרכזי של יום שישי.</li>
+            <li><strong>בטיחות הגיד בתרגילי כוח:</strong> עבודה איטית ומבוקרת (ללא תנופה או קפיצות). עליות עקב (גם בישיבה וגם בעמידה) מבוצעות על <strong>רצפה ישרה בלבד</strong> ללא דפיציט (ללא הורדת עקב מתחת למדרגה) כדי למנוע עומס דחיסה (Compression) מול עצם העקב.</li>
+            <li><strong>שמירת נתונים:</strong> ניתן לתעד את המשקל ומספר החזרות שבוצעו בכל סט – הנתונים נשמרים אוטומטית בדפדפן.</li>
+          </ul>
+        </div>
+
+        <!-- Session Selector & Controls -->
+        <div style="background: white; border: 1px solid var(--slate-300); border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div style="flex: 1; min-width: 260px;">
+              <label style="display: block; font-weight: 700; font-size: 0.88rem; color: var(--slate-800); margin-bottom: 6px;">
+                🗓️ בחר מועד אימון כוח לתיעוד ולמעקב נפרד:
+              </label>
+              <select id="strength-session-select" class="workout-notes-input" style="font-size: 0.92rem; font-weight: 700; padding: 8px 12px; background: #f8fafc;" onchange="selectStrengthSession(this.value)">
+                <!-- populated by JS -->
+              </select>
+            </div>
+
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end;">
+              <button class="btn btn-secondary" onclick="toggleProgressionView()" id="btn-toggle-progression" style="font-size: 0.85rem;">
+                📊 טבלת התקדמות משקלים (שבועות 1–4)
+              </button>
+              <button class="btn btn-primary" onclick="markCurrentStrengthSessionCompleted()" style="font-size: 0.85rem; background: #10b981;">
+                ✅ סמן אימון זה כ"בוצע" בלוח הראשי
+              </button>
+            </div>
+          </div>
+
+          <!-- Active Session Info Banner -->
+          <div id="active-session-banner" style="background: #f1f5f9; border-radius: 8px; padding: 10px 14px; font-size: 0.86rem; color: var(--slate-700); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <span id="active-session-title" style="font-weight: 700;">שבוע 1 - יום ד' (16.09.2026) | FBW 1</span>
+            <span id="active-session-status-badge" style="font-size: 0.78rem; font-weight: 600; padding: 2px 8px; border-radius: 4px; background: #e2e8f0;">טרם סומן כהושלם</span>
+          </div>
+        </div>
+
+        <!-- Progression Table (Hidden by default) -->
+        <div id="progression-table-card" style="display: none; background: white; border: 1px solid var(--slate-200); border-radius: 12px; padding: 18px; margin-bottom: 20px; box-shadow: var(--card-shadow);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--slate-900);">📈 השוואת עומס והתקדמות משקלים (Progressive Overload)</h3>
+            <button class="btn btn-secondary" style="font-size: 0.75rem; padding: 4px 8px;" onclick="toggleProgressionView()">סגור טבלה ✕</button>
+          </div>
+          <div style="overflow-x: auto;">
+            <table class="sets-table" id="progression-comparison-table">
+              <!-- populated by JS -->
+            </table>
+          </div>
+        </div>
+
+        <!-- FBW Quick Program Switch Buttons -->
+        <div class="strength-header-bar">
+          <button class="week-filter-btn active" id="btn-show-fbw1" onclick="switchFbw('fbw1')">
+            🏋️ תוכנית FBW 1 (סולאוס בישיבה, סקווט, חזה, חתירה, מזוודה, איזומטרי)
+          </button>
+          <button class="week-filter-btn" id="btn-show-fbw2" onclick="switchFbw('fbw2')">
+            🏋️ תוכנית FBW 2 (דדליפט רומני, עליות עקב בעמידה, ספליט, כתפיים, חתירה, אגן)
+          </button>
+        </div>
+      </div>
+
+      <!-- Container for Exercises (Rendered by JS) -->
+      <div id="fbw-exercises-container"></div>
+    </section>
+
+    <!-- TAB 3: TENDON & 24H SYMPTOM TRACKER -->
+    <section id="tab-tracker" class="tab-panel">
+      <div class="tracker-grid">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">📝 תיעוד יומי - מודל ניטור גיד 24 שעות</h2>
+            <span style="font-size: 0.8rem; color: var(--slate-600);">הערכה מדי בוקר ובדיקת תגובה לאימון אמש</span>
+          </div>
+
+          <form id="tendon-form" onsubmit="saveDailyTendonLog(event)">
+            <div class="form-group">
+              <label class="form-label" for="log-date">תאריך דיווח</label>
+              <input type="date" id="log-date" class="workout-notes-input" style="padding: 8px;" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">משך נוקשות בוקר (דקות)</label>
+              <div class="range-wrapper">
+                <input type="range" id="log-stiffness" class="range-input" min="0" max="60" value="5" step="1" oninput="updateRangeVal('stiffness', this.value)">
+                <div class="range-value-badge" id="badge-stiffness">5 דק'</div>
+              </div>
+              <div class="form-help">מדד רגישות ראשוני: &lt;10 דק' תקין | 10–20 דק' גבולי | &gt;20 דק' התלקחות</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">רמת כאב בוקר בגיד (0–10)</label>
+              <div class="range-wrapper">
+                <input type="range" id="log-morning-pain" class="range-input" min="0" max="10" value="2" step="0.5" oninput="updateRangeVal('morning-pain', this.value)">
+                <div class="range-value-badge" id="badge-morning-pain">2.0</div>
+              </div>
+              <div class="form-help">0 = ללא כאב כלל, 10 = כאב בלתי נסבל בעמידה/צעדים ראשונים</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">רמת כאב לאחר אימון (0–10)</label>
+              <div class="range-wrapper">
+                <input type="range" id="log-post-pain" class="range-input" min="0" max="10" value="2" step="0.5" oninput="updateRangeVal('post-pain', this.value)">
+                <div class="range-value-badge" id="badge-post-pain">2.0</div>
+              </div>
+              <div class="form-help">הערכת כאב כשעה לאחר האימון שבוצע</div>
+            </div>
+
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="log-sharp-pain">
+                <span>האם מופיע כאב חד בצליעה או בהליכה יומיומית רגילה?</span>
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="log-notes">הערות קליניות / תחושה כללית</label>
+              <input type="text" id="log-notes" class="workout-notes-input" placeholder="לדוגמה: תחושת נוקשות קלה שנעלמה במקלחת, ריצה בנעליים יציבות">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+              💾 שמור דיווח יומי ועדכן סטטוס
+            </button>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">🧭 ניתוח תגובתי והמלצה לפעולה (24h Window)</h2>
+          </div>
+
+          <div id="live-feedback-box" class="alert alert-green">
+            <span class="alert-icon" id="feedback-icon">🟢</span>
+            <div>
+              <strong id="feedback-status-title">סטטוס: ירוק (סבילות תקינה)</strong>
+              <p id="feedback-desc" style="margin-top: 4px;">
+                הגיד מתאושש באופן פיזיולוגי תקין. כאב בוקר נמוך מ-3 ונוקשות בוקר מתחת ל-10 דקות. ניתן להמשיך בתוכנית האימונים המתוכננת ללא שינוי.
+              </p>
+            </div>
+          </div>
+
+          <div style="background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 10px; padding: 14px; margin-bottom: 16px;">
+            <div style="font-weight: 700; font-size: 0.9rem; margin-bottom: 6px; color: var(--slate-800);">חוקי מודל 24 השעות:</div>
+            <ul style="padding-right: 18px; font-size: 0.84rem; color: var(--slate-600); line-height: 1.6;">
+              <li><strong style="color: #059669;">ירוק (Pain ≤ 3, Stiffness &lt; 10m):</strong> עומס מכני נסבל. המשיכו בריצות וספינינג לפי התוכנית.</li>
+              <li><strong style="color: #d97706;">צהוב (Pain = 4, Stiffness 10–20m):</strong> עומס גבולי. שמרו על נפח קיים, אין להאריך אינטרוולים, בצעו החזקות איזומטריות.</li>
+              <li><strong style="color: #dc2626;">אדום (Pain &gt; 4, Stiffness &gt; 20m, או כאב חד בהליכה):</strong> רגישות יתר רקמתית. החליפו מיידית את אימון הריצה ברכיבת ספינינג Zone 2 ו-45 שניות החזקות איזומטריות.</li>
+            </ul>
+          </div>
+
+          <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 8px;">היסטוריית דיווחים</div>
+          <div class="history-table-wrapper">
+            <table class="history-table">
+              <thead>
+                <tr>
+                  <th>תאריך</th>
+                  <th>כאב בוקר</th>
+                  <th>נוקשות</th>
+                  <th>כאב אימון</th>
+                  <th>סטטוס</th>
+                  <th>פעולות</th>
+                </tr>
+              </thead>
+              <tbody id="history-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 20px;">
+        <div class="card-header">
+          <h2 class="card-title">📈 מגמת מדדי כאב ונוקשות בוקר לאורך זמן</h2>
+          <span style="font-size: 0.8rem; color: var(--slate-600);">גרף סף רגישות קליני (סף כאב יעד ≤ 3)</span>
+        </div>
+        <div id="chart-area" style="position: relative;"></div>
+      </div>
+    </section>
+
+    <!-- TAB 4: RUN/WALK ASSISTANT & PACER -->
+    <section id="tab-timer" class="tab-panel">
+      <div class="timer-container">
+        <div class="timer-phase-badge phase-idle" id="timer-badge">מוכן להתחלה</div>
+        <div class="timer-digits" id="timer-display">04:00</div>
+        <div class="timer-subinfo" id="timer-subtext">אינטרוול 1 מתוך 8 | סה"כ זמן שחלף: 00:00</div>
+
+        <div class="timer-controls">
+          <button class="btn-timer btn-start" id="btn-timer-start" onclick="toggleTimer()">
+            <span>▶️</span> התחל אימון
+          </button>
+          <button class="btn-timer btn-pause" id="btn-timer-pause" onclick="pauseTimer()" style="display: none;">
+            <span>⏸️</span> השהה
+          </button>
+          <button class="btn-timer btn-skip" onclick="skipInterval()">
+            <span>⏭️</span> דלג למקטע הבא
+          </button>
+          <button class="btn-timer btn-reset" onclick="resetIntervalTimer()">
+            <span>🔄</span> איפוס
+          </button>
+        </div>
+
+        <div class="preset-pills">
+          <button class="preset-btn active" onclick="selectPreset(4, 1, 8, this)">שבוע 1: 4 ריצה / 1 הליכה (8 חזרות)</button>
+          <button class="preset-btn" onclick="selectPreset(6, 1, 7, this)">שבוע 2 ארוכה: 6 ריצה / 1 הליכה (7 חזרות)</button>
+          <button class="preset-btn" onclick="selectPreset(5, 1, 6, this)">שבוע 2 קלה: 5 ריצה / 1 הליכה (6 חזרות)</button>
+          <button class="preset-btn" onclick="selectPreset(10, 1, 4, this)">שבוע 4: 10 ריצה / 1 הליכה (4 חזרות)</button>
+          <button class="preset-btn" onclick="selectPreset(1, 1, 10, this)">התאמה קצרה: 1 ריצה / 1 הליכה (10 חזרות)</button>
+        </div>
+
+        <div style="margin-top: 18px; font-size: 0.8rem; color: #cbd5e1;">
+          🔔 חיווי קולי מובנה: צפצוף מעבר מקטע וספירה לאחור (3, 2, 1) ללא צורך בהורדת קבצים.
+        </div>
+      </div>
+
+      <div class="cadence-box">
+        <div class="cadence-left">
+          <div class="metronome-light" id="metronome-light"></div>
+          <div>
+            <div style="font-weight: 700; font-size: 1.05rem; color: var(--slate-900);">מטרונום קדנס מובנה (צעדים בדקה)</div>
+            <div style="font-size: 0.82rem; color: var(--slate-600);">יעד ביומכני מומלץ: 170–180 צעדים בדקה להפחתת עומס בלימה על אכילס</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+          <input type="range" id="cadence-slider" min="160" max="190" value="175" step="1" oninput="updateCadenceVal(this.value)" style="width: 140px;">
+          <span style="font-weight: 800; font-size: 1.1rem; min-width: 70px;" id="cadence-display">175 SPM</span>
+          <button class="btn btn-secondary" id="btn-cadence-toggle" onclick="toggleCadence()">
+            <span>🎵</span> הפעל מטרונום
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">👟 דגשי ריצה ביומכניים להגנה על הגיד (Running Cues)</h2>
+        </div>
+        <div class="cue-grid">
+          <div class="cue-card">
+            <div class="cue-title">⚡ קדנס מוגבר (170–180 SPM)</div>
+            <div class="cue-text">
+              העלאת קצב הצעדים בכ-5%–10% מקצרת את אורך הצעד ומקטינה את אימפולס הבלימה (Braking Force) ואת מומנט הכפיפה הגבית בקרסול.
+            </div>
+          </div>
+
+          <div class="cue-card">
+            <div class="cue-title">🎯 נחיתת מרכז כף רגל (Midfoot)</div>
+            <div class="cue-text">
+              יש להימנע מנחיתה קיצונית על כריות הבהונות (Forefoot), המעמיסה ישירות על גיד אכילס והסולאוס כקפיץ אלסטי יתר על המידה.
+            </div>
+          </div>
+
+          <div class="cue-card">
+            <div class="cue-title">🤫 נחיתה שקטה (Soft Landing)</div>
+            <div class="cue-text">
+              שמירה על נחיתה "שקטה" מונעת כוחות אימפקט חדים ומקטינה את קצב עליית העומס (Loading Rate) על הגיד בקרקע.
+            </div>
+          </div>
+
+          <div class="cue-card">
+            <div class="cue-title">🚶 הליכה מהירה במקטעי המנוחה</div>
+            <div class="cue-text">
+              מקטע ההליכה (1 דקה) מאפשר לגיד "התאוששות ויסקו-אלסטית" ומנמיך את העומס המצטבר תוך שמירה על דופק אירובי.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: TENDON CLINICAL PROTOCOLS & EXERCISE REFERENCE -->
+    <section id="tab-protocols" class="tab-panel">
+      <div class="protocol-card">
+        <span class="protocol-badge badge-iso">פרוטוקול 1 | שיכוך כאב וויסות עצבי</span>
+        <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--slate-900); margin-bottom: 8px;">
+          החזקות איזומטריות (Isometric Loading Protocol)
+        </h2>
+        <p style="color: var(--slate-700); font-size: 0.92rem; margin-bottom: 14px;">
+          מבוסס על מחקרי Ebonie Rio ו-Jill Cook: כיווץ איזומטרי בעומס בינוני-גבוה מפחית אינהיביציה קורטיקלית ומספק אפקט אנלגטי (שיכוך כאב) הנמשך 45–60 דקות ללא עומס דחיסה או שחרור אלסטי.
+        </p>
+
+        <div style="background: #eef2ff; border-right: 4px solid #4f46e5; padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 16px; font-size: 0.88rem; color: #312e81;">
+          <strong>מינון וביצוע:</strong> 4 עד 5 סטים של 45 שניות החזקה סטטית במצב פלנטרפלקסיה אמצע-טווח (עמידה או ישיבה על כרית כף הרגל על משטח ישר, ללא מתיחה מתחת למדרגה!). 2 דקות מנוחה מלאה בין הסטים. עצימות של כ-70% ממאמץ מרבי (MVC).
+        </div>
+
+        <div class="interactive-helper-box">
+          <div>
+            <div style="font-weight: 700; color: var(--slate-900);">טיימר החזקה איזומטרית מובנה (45 שניות)</div>
+            <div style="font-size: 0.82rem; color: var(--slate-600);" id="iso-status-label">מוכן להחזקה סטטית (סט 1 מתוך 4)</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="font-size: 2rem; font-weight: 800; color: #4338ca; min-width: 70px; text-align: center;" id="iso-timer-display">45</div>
+            <button class="btn btn-primary" id="btn-iso-toggle" onclick="toggleIsoTimer()">התחל החזקה</button>
+            <button class="btn btn-secondary" onclick="resetIsoTimer()">איפוס</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="protocol-card">
+        <span class="protocol-badge badge-hsr">פרוטוקול 2 | כוח ספציפי וספיגת עומסים</span>
+        <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--slate-900); margin-bottom: 8px;">
+          אימון כוח איטי וכבד (HSR) לשריר הסולאוס (Seated Soleus Calf Raise)
+        </h2>
+        <p style="color: var(--slate-700); font-size: 0.92rem; margin-bottom: 14px;">
+          שריר הסולאוס מייצר מעל 60% מכוח הדחיפה בריצה וסופג עומס של פי 6–8 ממשקל הגוף בכל צעד. בישיבה עם ברך כפופה ב-90 מעלות, הגסטרוקנמיוס מושבת מכנית (Active Insufficiency), והעומס מבודד ישירות לסולאוס ולחלק העמוק של גיד אכילס.
+        </p>
+
+        <div style="background: #fffbeb; border-right: 4px solid #d97706; padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 16px; font-size: 0.88rem; color: #78350f;">
+          <strong>מינון וקצב (Tempo):</strong> 4 סטים של 8–10 חזרות עם התנגדות כבדה. <strong>קצב מבוקר: 3 שניות עלייה קונצנטרית, 3 שניות ירידה אקסצנטרית</strong>. אין לבצע ניתורים או שימוש בתנופה!
+        </div>
+
+        <div class="interactive-helper-box">
+          <div>
+            <div style="font-weight: 700; color: var(--slate-900);">מנחה קצב חזרות HSR (3 שניות עלייה / 3 שניות ירידה)</div>
+            <div style="font-size: 0.82rem; color: var(--slate-600);" id="hsr-tempo-label">לחץ להתחלת מנחה קצב קולי-ויזואלי</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div id="hsr-visual-bar" style="padding: 8px 16px; border-radius: 8px; font-weight: 800; font-size: 1rem; background: #fef3c7; color: #92400e; min-width: 140px; text-align: center;">
+              עמידה מוצא
+            </div>
+            <button class="btn btn-primary" id="btn-hsr-toggle" onclick="toggleHsrTempo()">הפעל קצב HSR</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="protocol-card">
+        <span class="protocol-badge badge-bike">פרוטוקול 3 | קרוס-טריינינג והפרדת מערכות</span>
+        <h2 style="font-size: 1.3rem; font-weight: 700; color: var(--slate-900); margin-bottom: 8px;">
+          כיוונון ספינינג מותאם אכילס (Decoupled Cardio Conditioning)
+        </h2>
+        <p style="color: var(--slate-700); font-size: 0.92rem; margin-bottom: 14px;">
+          מטרת הספינינג בתוכנית היא לבנות ולשמר כושר אירובי מרבי (VO2max ונפח Zone 2) ללא אף מגע אימפקט או מחזור מתיחה-קיצור (Stretch-Shortening Cycle) על גיד אכילס.
+        </p>
+
+        <div class="cue-grid">
+          <div class="cue-card">
+            <div class="cue-title">⚙️ מיקום פדל במרכז כף הרגל (Midfoot Placement)</div>
+            <div class="cue-text">
+              מיקום ציר הפדל תחת קשת כף הרגל (או הזזת הקליטים לאחור) מאפס למעשה את זרוע המומנט (Lever Arm) של הקרסול, ובכך מוריד את העומס על גיד אכילס לכמעט אפס.
+            </div>
+          </div>
+
+          <div class="cue-card">
+            <div class="cue-title">🪑 רכיבה בישיבה בלבד (Seated Cycling Only)</div>
+            <div class="cue-text">
+              איסור מוחלט על עמידה על הפדלים (Out-of-saddle climb). עמידה מחייבת כיווץ אקסצנטרי אגרסיבי של הסולאוס ודוחסת את הגיד.
+            </div>
+          </div>
+
+          <div class="cue-card">
+            <div class="cue-title">🔄 קדנס רכיבה חלק ורציף (85–95 RPM)</div>
+            <div class="cue-text">
+              רכיבה בסל"ד גבוה עם התנגדות מתונה מונעת מאמצי פיתול גבוהים (Torque) ושומרת על זרימת דם מיטבית.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: RACE DAY STRATEGY & TAPER -->
+    <section id="tab-raceday" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">🏆 פרוטוקול יום המירוץ – 8 ק"מ בוז'ולה (23.10.2026)</h2>
+          <span class="badge-race">יום שישי, 23 באוקטובר 2026</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="border-right: 4px solid #ef4444; padding-right: 14px;">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--slate-900);">⏱️ לו"ז חימום איזומטרי (T-35 דקות לזינוק):</h3>
+            <p style="font-size: 0.9rem; color: var(--slate-700); margin-top: 4px;">
+              בצע 4 סטים של החזקה איזומטרית ל-45 שניות על משטח ישר כ-35 דקות לפני שעת הזינוק. פרוטוקול זה מייצר "חלון אנלגטי" של שיכוך כאב וויסות עירור נוירולוגי שיגן על הגיד בקילומטרים הראשונים של הריצה.
+            </p>
+          </div>
+
+          <div style="border-right: 4px solid #3b82f6; padding-right: 14px;">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--slate-900);">🏃 טקטיקת קצב במהלך 8 הק"מ:</h3>
+            <p style="font-size: 0.9rem; color: var(--slate-700); margin-top: 4px;">
+              - ק"מ 1–2: כניסה שקטה וזהירה לקצב, דגש על קדנס 175 צעדים/דקה, ללא זינוק אגרסיבי.<br>
+              - ק"מ 3–6: קצב שיוט יציב, שמירה על אורך צעד קצר ונחיתת מרכז כף רגל.<br>
+              - ק"מ 7–8: הגברת מאמץ מבוקרת. אם מופיעה תחושת לחץ בגיד, ניתן לשלב 20 שניות הליכה מהירה.
+            </p>
+          </div>
+
+          <div style="border-right: 4px solid #10b981; padding-right: 14px;">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--slate-900);">🧊 התאוששות שלאחר חציית קו הסיום:</h3>
+            <p style="font-size: 0.9rem; color: var(--slate-700); margin-top: 4px;">
+              - הימנע ממתיחות אגרסיביות (Drop stretch) למדרגה! מתיחה מביאה לדחיסת הגיד כנגד עצם העקב (Calcaneal impingement).<br>
+              - ביצוע הליכה קלה להורדת דופק והחזקה איזומטרית קלה.<br>
+              - ניטור נוקשות הבוקר למחרת (24 באוקטובר) לבחינת תגובת ההתאוששות.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">💾 ניהול נתונים מקומי (Local Storage)</h2>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--slate-600); margin-bottom: 14px;">
+          כל הנתונים (אימונים שסומנו, נתוני משקלי אימוני כוח FBW, הערות אישיות, דיווחים יומיים) נשמרים אוטומטית בדפדפן המקומי שלכם. ניתן לייצא קובץ גיבוי או לאפס לברירת המחדל.
+        </p>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button class="btn btn-secondary" onclick="exportAppData()">📤 יצוא נתונים כקובץ JSON</button>
+          <button class="btn btn-secondary" onclick="document.getElementById('import-file-input').click()">📥 יבוא נתונים מגיבוי</button>
+          <input type="file" id="import-file-input" style="display: none;" onchange="importAppData(event)" accept=".json">
+          <button class="btn btn-secondary" style="color: #ef4444;" onclick="resetAllAppData()">🗑️ איפוס נתוני אפליקציה</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      תוכנית אימונים, כוח FBW וניהול עומסים – 8 ק"מ מירוץ בוז'ולה ישראל 2026 | מבוסס על עקרונות פיזיותרפיה ומדעי התנועה (Cook, Purdam, Rio, Silbernagel)
+    </div>
+  </footer>
+
+  <script>
+    /* ==========================================================================
+       DATA & APPLICATION STATE
+       ========================================================================== */
+    const RACE_DATE = new Date('2026-10-23T07:00:00+03:00');
+
+    const DEFAULT_WORKOUTS = [{"id": "w1-1", "week": 1, "dayName": "יום ד'", "dateStr": "16.09.2026", "isoDate": "2026-09-16", "type": "spin", "typeName": "ספינינג נפח + FBW 1", "title": "ספינינג נפח Zone 2 (45 דק') + אימון כוח FBW 1 (דגש סולאוס)", "desc": "45 דקות רכיבה רציפה בדופק אירובי נמוך/בינוני (Zone 2, סל\"ד 85–90) בישיבה מלאה עם מיקום פדל במרכז כף הרגל. מיד בסיום: אימון כוח FBW 1 (סולאוס בישיבה, סקווט, לחיצת חזה, חתירה, נשיאת מזוודה ואיזומטרי).", "focusTag": "ביסוס סובלנות וחיזוק השרשרת", "status": "pending", "notes": "", "isRun": false, "strengthSessionId": "w1-1", "fbwType": "fbw1"}, {"id": "w1-2", "week": 1, "dayName": "יום ו'", "dateStr": "18.09.2026", "isoDate": "2026-09-18", "type": "run", "typeName": "Run/Walk מקוטעת", "title": "ריצה מקוטעת 5.5–6 ק\"מ (4 דק' ריצה / 1 דק' הליכה מהירה)", "desc": "חימום: החזקה איזומטרית 2 סטים של 45 שניות. גוף האימון: חזרות של 4 דקות ריצה קלה בקדנס 175 צעדים/דקה ומעבר ל-1 דקה הליכה מהירה. סה\"כ נפח: 5.5 עד 6 ק\"מ.", "focusTag": "הסתגלות אלסטית מבוקרת", "status": "pending", "notes": "", "isRun": true}, {"id": "w1-3", "week": 1, "dayName": "יום א'", "dateStr": "20.09.2026", "isoDate": "2026-09-20", "type": "spin", "typeName": "ספינינג אינטרוולים + FBW 2", "title": "ספינינג אינטרוולים VO2max (5x4 דק') + אימון כוח FBW 2 (דדליפט וגסטרוקנמיוס)", "desc": "חימום 10 דק'. 5 אינטרוולים של 4 דקות בעצימות גבוהה (Zone 4/5) עם 2.5 דקות שחרור. ישיבה מלאה, פדל במרכז הרגל. לאחר מכן: אימון כוח FBW 2 (RDL, עליות עקב בעמידה, לאנג' אחורי, לחיצת כתפיים, חתירה בהטיה וגשר אגן).", "focusTag": "עומס קרדיווסקולרי וכוח שרשרת אחורית", "status": "pending", "notes": "", "isRun": false, "strengthSessionId": "w1-3", "fbwType": "fbw2"}, {"id": "w1-4", "week": 1, "dayName": "יום ב'", "dateStr": "21.09.2026", "isoDate": "2026-09-21", "type": "run", "typeName": "ריצה קלה Run/Walk", "title": "ריצה קלה 5 ק\"מ (4 דק' ריצה / 1 דק' הליכה)", "desc": "ריצת התאוששות קלילה במקטעים של 4 דק' ריצה ו-1 דק' הליכה. דגש על צעדים קלים ושקטים. בסיום: 3 סטים של החזקה איזומטרית ל-45 שניות.", "focusTag": "נפח קל ובדיקת תגובת גיד 24h", "status": "pending", "notes": "", "isRun": true}, {"id": "w2-1", "week": 2, "dayName": "יום ד'", "dateStr": "23.09.2026", "isoDate": "2026-09-23", "type": "spin", "typeName": "ספינינג + FBW 1", "title": "ספינינג נפח 50 דק' + אימון כוח FBW 1 (HSR סולאוס)", "desc": "50 דקות רכיבת Zone 2 רציפה בישיבה. לאחר מכן: ביצוע אימון כוח FBW 1 (דגש מיוחד על 4 סטים של עליות עקב בישיבה עם מוט לסולאוס בקצב 3-0-3).", "focusTag": "חיזוק מכני ממוקד לסולאוס", "status": "pending", "notes": "", "isRun": false, "strengthSessionId": "w2-1", "fbwType": "fbw1"}, {"id": "w2-2", "week": 2, "dayName": "יום ו'", "dateStr": "25.09.2026", "isoDate": "2026-09-25", "type": "run", "typeName": "ריצה מקוטעת ארוכה", "title": "ריצה מקוטעת ארוכה 6.5 ק\"מ (6 דק' ריצה / 1 דק' הליכה)", "desc": "הארכת מקטע הריצה הרציפה ל-6 דקות, ומעבר ל-1 דקה הליכה מהירה. סה\"כ נפח: 6.5 ק\"מ. שמירה על קדנס מהיר וקבוע (170–180 צעדים/דקה). בסיום שחרור ומעקב נוקשות בוקר למחרת.", "focusTag": "התקדמות נפח ספציפי", "status": "pending", "notes": "", "isRun": true}, {"id": "w2-3", "week": 2, "dayName": "יום א'", "dateStr": "27.09.2026", "isoDate": "2026-09-27", "type": "spin", "typeName": "ספינינג סף + FBW 2", "title": "ספינינג סף (4x5 דק' בקצב תחרותי) + אימון כוח FBW 2", "desc": "10 דק' חימום. 4 מקטעים של 5 דקות בעצימות סף אנאירובי (Sweet Spot, Zone 4) עם 3 דק' התאוששות. ישיבה בלבד, קדנס 90 RPM. לאחר מכן: אימון כוח FBW 2.", "focusTag": "סיבולת מהירות וסף נשימתי", "status": "pending", "notes": "", "isRun": false, "strengthSessionId": "w2-3", "fbwType": "fbw2"}, {"id": "w2-4", "week": 2, "dayName": "יום ב'", "dateStr": "28.09.2026", "isoDate": "2026-09-28", "type": "run", "typeName": "ריצה קלה Run/Walk", "title": "ריצה קלה 5 ק\"מ (5 דק' ריצה / 1 דק' הליכה)", "desc": "5 ק\"מ קלים במתכונת 5 דק' ריצה ו-1 דק' הליכה. ריצה קלה לחלוטין ללא מאמץ נשימתי, עם נחיתת מרכז כף רגל (Midfoot).", "focusTag": "שמירה על סובלנות רקמתית", "status": "pending", "notes": "", "isRun": true}, {"id": "w3-1", "week": 3, "dayName": "יום ד'", "dateStr": "30.09.2026", "isoDate": "2026-09-30", "type": "spin", "typeName": "ספינינג נפח + FBW 1", "title": "ספינינג נפח 45 דק' + אימון כוח FBW 1", "desc": "45 דקות רכיבת התאוששות אירובית מתונה (Zone 2) בסל\"ד נוח (85–90). לאחר מכן אימון כוח FBW 1 מלא לשמירה על כוח בסיסי.", "focusTag": "התאוששות אקטיבית וכוח", "status": "pending", "notes": "", "isRun": false, "strengthSessionId": "w3-1", "fbwType": "fbw1"}, {"id": "w3-2", "week": 3, "dayName": "יום ו'", "dateStr": "02.10.2026", "isoDate": "2026-10-02", "type": "run", "typeName": "ריצת פריצת רציפות", "title": "ריצת פריצת רציפות 6.5–7 ק\"מ (1 ק\"מ חימום, 4 ק\"מ ריצה רציפה בקצב יעד, שחרור)", "desc": "אימון מפתח להסתגלות רציפה: 1 ק\"מ חימום קל משולב הליכה. 4 ק\"מ ריצה רציפה מלאה בקצב תחרות יעד (ללא עצירה להליכה אם הכאב מתחת ל-3). שחרור 1.5–2 ק\"מ קלים.", "focusTag": "מבחן רציפות לעומס אלסטי", "status": "pending", "notes": "", "isRun": true}, {"id": "w3-3", "week": 3, "dayName": "יום א'", "dateStr": "04.10.2026", "isoDate": "2026-10-04", "type": "spin", "typeName": "ספינינג אינטרוולים + FBW 2", "title": "ספינינג אינטרוולים (5x3.5 דק') + אימון כוח FBW 2", "desc": "חימום 10 דק'. 5 מקטעי אינטרוול של 3.5 דקות בעצימות גבוהה עם 2 דק' התאוששות. שחרור 10 דק'. לאחר מכן אימון כוח FBW 2.", "focusTag": "עצימות אנאירובית ודופק גבוה", "status": "pending", "notes": "", "isRun": false, "strengthSessionId": "w3-3", "fbwType": "fbw2"}, {"id": "w3-4", "week": 3, "dayName": "יום ב'", "dateStr": "05.10.2026", "isoDate": "2026-10-05", "type": "run", "typeName": "ריצה קלה", "title": "ריצה קלה 4.5 ק\"מ", "desc": "ריצה קלה ומשוחררת (ניתן לשלב 1 דק' הליכה באמצע במידת הצורך). דגש מלא על תחושת קלות ברגליים וקדנס גבוה.", "focusTag": "התאוששות פעילה לקראת שבוע שיא", "status": "pending", "notes": "", "isRun": true}, {"id": "w4-1", "week": 4, "dayName": "יום ד'", "dateStr": "07.10.2026", "isoDate": "2026-10-07", "type": "spin", "typeName": "ספינינג + FBW 1 מקוצר", "title": "ספינינג קל/בינוני 40 דק' + FBW 1 מקוצר (שמירת כוח)", "desc": "רכיבת Zone 2 מתונה להזרמת דם. בסיום: 2 סטים בלבד לכל תרגיל ב-FBW 1 לשמירה על טונוס שרירי ללא גרימת עייפות מצטברת לקראת אימון השיא.", "focusTag": "שמירה על טונוס שרירי", "status": "pending", "notes": "", "isRun": false, "strengthSessionId": "w4-1", "fbwType": "fbw1"}, {"id": "w4-2", "week": 4, "dayName": "יום ו'", "dateStr": "09.10.2026", "isoDate": "2026-10-09", "type": "run", "typeName": "אימון שיא תחרותי", "title": "אימון השיא – 7 ק\"מ (1 ק\"מ חימום, 5 ק\"מ רציפים בקצב מירוץ, 1 ק\"מ שחרור)", "desc": "סימולציית המירוץ העיקרית: 1 ק\"מ חימום Run/Walk. 5 ק\"מ רציפים בקצב תחרות מתוכנן. 1 ק\"מ ריצת שחרור איטית מאוד. מעקב הדוק של מודל 24 שעות בבוקר שבת!", "focusTag": "סימולציית שיא והסתגלות עומס מקסימלית", "status": "pending", "notes": "", "isRun": true}, {"id": "w4-3", "week": 4, "dayName": "יום א'", "dateStr": "11.10.2026", "isoDate": "2026-10-11", "type": "spin", "typeName": "ספינינג אינטרוולים קצר", "title": "ספינינג אינטרוולים קצר (4x2.5 דק') + FBW 2 קל (2 סטים)", "desc": "אינטרוולים חדים וקצרים לשמירה על חדות נוירו-מוסקולרית ללא עייפות. לאחר מכן: FBW 2 בעומס מתון (2 סטים בלבד) לקראת כניסה לטייפר.", "focusTag": "חדות עצבית לקראת הטייפר", "status": "pending", "notes": "", "isRun": false, "strengthSessionId": "w4-3", "fbwType": "fbw2"}, {"id": "w4-4", "week": 4, "dayName": "יום ב'", "dateStr": "12.10.2026", "isoDate": "2026-10-12", "type": "run", "typeName": "ריצת שחרור קלה", "title": "ריצת שחרור קלה 4 ק\"מ (Run/Walk)", "desc": "ריצת התאוששות קלילה (4 דק' ריצה / 1 דק' הליכה). הורדת סטרס מוחלטת מהגיד לקראת כניסה לטייפר.", "focusTag": "סגירת שבוע שיא ומעבר לטייפר", "status": "pending", "notes": "", "isRun": true}, {"id": "w5-1", "week": 5, "dayName": "יום ד'", "dateStr": "14.10.2026", "isoDate": "2026-10-14", "type": "spin", "typeName": "ספינינג קליל + איזומטרי", "title": "ספינינג קליל 30 דק' + 4 סטים החזקה איזומטרית (ללא הרמת משקולות כבדות)", "desc": "30 דקות סיבוב רגליים קליל בהתנגדות נמוכה (Zone 1/2) להזרמת דם. בטייפר: הפסקת אימוני כוח כבדים, ביצוע החזקות איזומטריות בלבד לשמירה על גיד שקט.", "focusTag": "התחלת טייפר והתאוששות קולגן", "status": "pending", "notes": "", "isRun": false}, {"id": "w5-2", "week": 5, "dayName": "יום ו'", "dateStr": "16.10.2026", "isoDate": "2026-10-16", "type": "run", "typeName": "ריצת שיוף וחדות", "title": "ריצת שיוף 3.5–4 ק\"מ עם 3 מקטעים של 100 מ' בקצב מירוץ", "desc": "ריצה קלה ונעימה (3.5 ק\"מ). בסיום: 3 מתגברות נינוחות של 100 מטר בקצב מירוץ לשמירה על חדות צעד, עם התאוששות הליכה מלאה ביניהן.", "focusTag": "שיוף מהירות וטייפר", "status": "pending", "notes": "", "isRun": true}, {"id": "w5-3", "week": 5, "dayName": "יום א'", "dateStr": "18.10.2026", "isoDate": "2026-10-18", "type": "spin", "typeName": "ספינינג פתיחת רגליים", "title": "ספינינג פתיחת רגליים קל 20 דק'", "desc": "רכיבה קצרצרה וקלילה (20 דק') רק כדי להזרים דם ולשחרר נוקשות. ללא כל מאמץ נשימתי. 3 סטים החזקה איזומטרית בסיום.", "focusTag": "רענון רגליים", "status": "pending", "notes": "", "isRun": false}, {"id": "w5-4", "week": 5, "dayName": "יום ב'", "dateStr": "19.10.2026", "isoDate": "2026-10-19", "type": "run", "typeName": "ריצה אחרונה בהחלט", "title": "ריצה אחרונה בהחלט – 2.5 ק\"מ קלילים", "desc": "2.5 ק\"מ קלים מאוד בקצב איטי. מטרתה הבלעדית היא תחושת ביטחון וקלילות. בסיום מתיחות קלות לירך הקדמית והאחורית בלבד.", "focusTag": "טייפר סופי", "status": "pending", "notes": "", "isRun": true}, {"id": "w5-5", "week": 5, "dayName": "ימים ג'–ה'", "dateStr": "20–22.10.2026", "isoDate": "2026-10-20", "type": "rest", "typeName": "מנוחה מלאה + איזומטרי", "title": "ג'–ה' (20–22.10): אפס ריצה, מנוחה והחזקות איזומטריות בלבד", "desc": "3 ימי מנוחה מוחלטת מאימונים אירוביים. בצע רק 3 סטים של החזקה איזומטרית 45 שניות ביום לשמירה על ויסות כאב ומניעת התנוונות קולגן. מילוי מאגרי פחמימות ושתייה.", "focusTag": "הגנה מקסימלית על הגיד ומילוי מאגרים", "status": "pending", "notes": "", "isRun": false}, {"id": "w5-6", "week": 5, "dayName": "יום ו' (23.10)", "dateStr": "23.10.2026", "isoDate": "2026-10-23", "type": "race", "typeName": "🏁 יום המירוץ!", "title": "יום המירוץ! 8 ק\"מ בוז'ולה ישראל (הנחיות חימום איזומטרי 35 דק' לפני הזינוק)", "desc": "זינוק ב-07:00! לו\"ז מדויק: ב-06:25 בצע 4 סטים של החזקה איזומטרית ל-45 שניות להשגת אפקט שיכוך כאב. בריצה: קדנס 175 צעדים/דקה, נחיתת מרכז כף רגל, וחלוקת כוחות חכמה. בהצלחה!", "focusTag": "הגשמת המטרה בבטחה", "status": "pending", "notes": "", "isRun": true}];
+    const DEFAULT_LOGS = [{"id": "log-1", "date": "2026-09-16", "stiffness": 4, "morningPain": 2.0, "postPain": 2.0, "sharpPain": false, "notes": "פתיחת תוכנית. גיד רגוע ושקט, נוקשות קלה שנעלמה תוך דקות ספורות."}];
+    const FBW_PROGRAMS = {"fbw1": {"title": "אימון כוח FBW 1 (דגש סולאוס בישיבה, סקווט, לחיצת חזה)", "subtitle": "ממוקד בידוד סולאוס (HSR), פיתוח כוח דחיפה בסיסי ויציבות ליבה ואגן", "exercises": [{"id": "fbw1-ex1", "name": "עליות עקב בישיבה עם מוט / משקולת (Seated Soleus Calf Raise)", "equipment": "ספסל + מוט (או משקולת יד כבדה על הברכיים)", "target": "שריר הסולאוס (Soleus) והחלק העמוק של גיד אכילס", "prescription": "4 סטים x 8–10 חזרות | קצב 3-0-3 (3 שנ' עלייה, 3 שנ' ירידה) | מנוחה: 90 שנ'", "cues": "שב על ספסל עם ברכיים כפופות ב-90 מעלות. הנח את המוט או המשקולת מעל הברכיים (עם מגבת/ריפוד). הרם את העקבים לאט ומבוקר, החזק שיא כיווץ לשנייה, ורד לאט במשך 3 שניות מלאות. ביצוע על רצפה ישרה ללא מדרגה!", "defaultSets": 4}, {"id": "fbw1-ex2", "name": "גובלט סקווט עם קטלבל / סקווט עם מוט (Goblet / Barbell Squat)", "equipment": "קטלבל או מוט על הגב", "target": "ארבע-ראשי (Quadriceps), ישבן (Gluteus Maximus), זוקפי גב וליבה", "prescription": "3–4 סטים x 8–10 חזרות | קצב 2-1-2 | מנוחה: 90 שנ'", "cues": "החזק קטלבל צמוד לחזה או מוט יציב על הגב. רד בעומק מבוקר תוך שמירה על עקבים צמודים לקרקע ועמוד שדרה ניטרלי. עלה בכוח דרך מרכז כף הרגל.", "defaultSets": 3}, {"id": "fbw1-ex3", "name": "לחיצת חזה על ספסל עם מוט או משקולות יד (Barbell / DB Bench Press)", "equipment": "ספסל שטוח + מוט או זוג משקולות יד", "target": "חזה גדול (Pec Major), דלתואיד קדמי, תלת-ראשי (Triceps)", "prescription": "3–4 סטים x 8–10 חזרות | קצב 2-0-1 | מנוחה: 90 שנ'", "cues": "הורד את המשקל באופן מבוקר אל קו החזה התחתון תוך כיווץ שכמות ונעילת רגליים ברצפה. דחף בעוצמה למעלה עד יישור מבוקר של המרפקים.", "defaultSets": 3}, {"id": "fbw1-ex4", "name": "חתירה במסור עם משקולת יד בהישענות על ספסל (Single-Arm DB Row)", "equipment": "משקולת יד + ספסל", "target": "רחב גבי (Latissimus Dorsi), מעוינים, טרפז אמצעי וכופפי מרפק", "prescription": "3 סטים x 10–12 חזרות לכל צד | מנוחה: 60 שנ'", "cues": "הנח ברך ויד תומכת על הספסל, גו מקביל לקרקע. משוך את המשקולת לכיוון המותן/כיס אחורי ללא סיבוב אגן, וכווץ את השכמה בסיום.", "defaultSets": 3}, {"id": "fbw1-ex5", "name": "נשיאת מזוודה עם קטלבל (Kettlebell Suitcase Carry)", "equipment": "קטלבל כבד (ביד אחת)", "target": "מייצבי אגן (Gluteus Medius), שרירי הליבה האלכסוניים (Obliques), קרסול", "prescription": "3 סטים x 35–40 שניות הליכה לכל צד | מנוחה: 60 שנ'", "cues": "החזק קטלבל ביד אחת ולך בצעדים מדודים בקו ישר. שמור על גו זקוף לחלוטין ואל תאפשר למשקל להטות את הגוף הצידה (Anti-lateral flexion).", "defaultSets": 3}, {"id": "fbw1-ex6", "name": "החזקות איזומטריות לגיד אכילס (Achilles Mid-Range Isometric Holds)", "equipment": "משקל גוף או אחיזת משקולת יד", "target": "קומפלקס אכילס-סולאוס-תאומים", "prescription": "3–4 סטים x 45 שניות | מנוחה: 60 שנ'", "cues": "עמוד על שתי הרגליים (או רגל אחת לפי רמת כאב) בעלייה קלה של העקבים על משטח ישר. החזק סטטי ב-70% כוח לשיכוך כאב וויסות עצבי.", "defaultSets": 3}]}, "fbw2": {"title": "אימון כוח FBW 2 (דגש דדליפט רומני, עליות עקב בעמידה, ספליט)", "subtitle": "ממוקד שרשרת אחורית, כוח חד-רגלי למניעת א-סימטריה, ועומס תאומים מבוקר", "exercises": [{"id": "fbw2-ex1", "name": "דדליפט רומני עם מוט או משקולות יד (Barbell / DB Romanian Deadlift - RDL)", "equipment": "מוט או זוג משקולות יד כבדות", "target": "המסטרינגס (Hamstrings), ישבן גדול (Gluteus Maximus), זוקפי גב", "prescription": "3–4 סטים x 8–10 חזרות | קצב 3-1-1 | מנוחה: 90 שנ'", "cues": "עמוד ברוחב אגן. בצע הטיית אגן לאחור (Hip Hinge) עם ברכיים כפופות קלות ורכות. רד עד מתחת לברכיים תוך מתיחה חזקה בהמסטרינגס, ועלה דרך כיווץ הישבן.", "defaultSets": 4}, {"id": "fbw2-ex2", "name": "עליות עקב בעמידה עם משקולות יד על משטח ישר (Standing DB Calf Raise)", "equipment": "זוג משקולות יד / קטלבלס", "target": "שריר התאומים (Gastrocnemius) וחלק אחורי של הגיד", "prescription": "3–4 סטים x 10–12 חזרות | קצב 3-1-3 (3 שנ' עלייה, 1 החזקה, 3 ירידה)", "cues": "עמידה עם ברכיים ישרות לחלוטין ומשקולות לצדי הגוף. עלה על כריות הבהונות באיטיות, החזק שיא כיווץ לשנייה אחת ורד במשך 3 שניות. רצפה ישרה בלבד!", "defaultSets": 3}, {"id": "fbw2-ex3", "name": "לאנג' לאחור / ספליט סקווט עם משקולות יד (DB Reverse Lunge / Split Squat)", "equipment": "זוג משקולות יד (וספסל לבולגרי במידת הרצון)", "target": "ארבע-ראשי, גלוטאוס מקסימוס ומדיוס, שרירי ייצוב כף הרגל", "prescription": "3 סטים x 8–10 חזרות לכל רגל | מנוחה: 75 שנ'", "cues": "קח צעד יציב לאחור ורד בניצב לקרקע עד שהברך האחורית כמעט נוגעת ברצפה. דחף דרך מרכז ועקב הרגל הקדמית. מחזק כוח חד-רגלי ומאזן א-סימטריה.", "defaultSets": 3}, {"id": "fbw2-ex4", "name": "לחיצת כתפיים בעמידה או בישיבה עם משקולות יד / קטלבל (DB/KB Overhead Press)", "equipment": "משקולות יד או קטלבל (וספסל)", "target": "שרירי הכתף (דלתואיד), טרפז, תלת-ראשי ושרירי הליבה", "prescription": "3 סטים x 8–10 חזרות | מנוחה: 90 שנ'", "cues": "שמור על בטן וזקופים נעולים. דחף את המשקולות מעל הראש בקו ישר עד נעילה מבוקרת, ללא הקשתת יתר של הגב התחתון.", "defaultSets": 3}, {"id": "fbw2-ex5", "name": "חתירה בהטיית גו עם מוט (Barbell Bent-Over Row)", "equipment": "מוט אולימפי / מוט משקולות", "target": "גב עליון, רחב גבי, מעוינים וזוקפים", "prescription": "3 סטים x 8–10 חזרות | מנוחה: 90 שנ'", "cues": "הטה גו בכ-45–60 מעלות עם ברכיים רכות. אחיזה ברוחב כתפיים. משוך את המוט בצמוד לירכיים עד מגע בטבור וכווץ שכמות.", "defaultSets": 3}, {"id": "fbw2-ex6", "name": "גשר אגן חד-רגלי עם קטלבל / משקולת (Single-Leg Glute Bridge with KB)", "equipment": "קטלבל או משקולת מונחת על הירך", "target": "ישבן גדול (Gluteus Maximus), זוקפי אגן והמסטרינגס", "prescription": "3 סטים x 10–12 חזרות לכל רגל | מנוחה: 60 שנ'", "cues": "שכב על הגב, רגל אחת כפופה עם עקב ברצפה, רגל שנייה מורמת. דחף את האגן למעלה בקו ישר תוך כיווץ מקסימלי של הישבן, מבלי לתת לאגן לצנוח.", "defaultSets": 3}]}};
+    const STRENGTH_SESSIONS_META = [{"id": "w1-1", "name": "שבוע 1 - יום ד' (16.09.2026)", "program": "fbw1", "label": "שבוע 1 - ד' 16.09 (FBW 1)"}, {"id": "w1-3", "name": "שבוע 1 - יום א' (20.09.2026)", "program": "fbw2", "label": "שבוע 1 - א' 20.09 (FBW 2)"}, {"id": "w2-1", "name": "שבוע 2 - יום ד' (23.09.2026)", "program": "fbw1", "label": "שבוע 2 - ד' 23.09 (FBW 1)"}, {"id": "w2-3", "name": "שבוע 2 - יום א' (27.09.2026)", "program": "fbw2", "label": "שבוע 2 - א' 27.09 (FBW 2)"}, {"id": "w3-1", "name": "שבוע 3 - יום ד' (30.09.2026)", "program": "fbw1", "label": "שבוע 3 - ד' 30.09 (FBW 1)"}, {"id": "w3-3", "name": "שבוע 3 - יום א' (04.10.2026)", "program": "fbw2", "label": "שבוע 3 - א' 04.10 (FBW 2)"}, {"id": "w4-1", "name": "שבוע 4 - יום ד' (07.10.2026)", "program": "fbw1", "label": "שבוע 4 - ד' 07.10 (FBW 1 - שיא 2 סטים)"}, {"id": "w4-3", "name": "שבוע 4 - יום א' (11.10.2026)", "program": "fbw2", "label": "שבוע 4 - א' 11.10 (FBW 2 - שיא 2 סטים)"}, {"id": "free-fbw1", "name": "אימון חופשי / נוסף (FBW 1)", "program": "fbw1", "label": "אימון חופשי - FBW 1"}, {"id": "free-fbw2", "name": "אימון חופשי / נוסף (FBW 2)", "program": "fbw2", "label": "אימון חופשי - FBW 2"}];
+
+    let appState = {
+      workouts: [],
+      logs: [],
+      // Sessions keyed by session ID (e.g. 'w1-1', 'w1-3', 'w2-1', etc.)
+      strengthSessions: {}, 
+      activeStrengthSessionId: 'w1-1',
+      activeWeekFilter: 'all',
+      activeFbw: 'fbw1',
+      showProgression: false,
+      latestStatus: 'green'
+    };
+
+    /* ==========================================================================
+       STORAGE LOGIC
+       ========================================================================== */
+    function loadState() {
+      try {
+        const savedWorkouts = localStorage.getItem('achilles_workouts_data');
+        const savedLogs = localStorage.getItem('achilles_logs_data');
+        const savedSessions = localStorage.getItem('achilles_strength_sessions_data');
+        
+        appState.workouts = savedWorkouts ? JSON.parse(savedWorkouts) : JSON.parse(JSON.stringify(DEFAULT_WORKOUTS));
+        appState.logs = savedLogs ? JSON.parse(savedLogs) : JSON.parse(JSON.stringify(DEFAULT_LOGS));
+        appState.strengthSessions = savedSessions ? JSON.parse(savedSessions) : {};
+      } catch (e) {
+        console.error('Error loading state from localStorage:', e);
+        appState.workouts = JSON.parse(JSON.stringify(DEFAULT_WORKOUTS));
+        appState.logs = JSON.parse(JSON.stringify(DEFAULT_LOGS));
+        appState.strengthSessions = {};
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem('achilles_workouts_data', JSON.stringify(appState.workouts));
+        localStorage.setItem('achilles_logs_data', JSON.stringify(appState.logs));
+        localStorage.setItem('achilles_strength_sessions_data', JSON.stringify(appState.strengthSessions));
+      } catch (e) {
+        console.error('Error saving state:', e);
+      }
+      updateGlobalStatus();
+      renderWorkouts();
+      renderSessionSelectDropdown();
+      renderFbwExercises();
+      renderHistoryTable();
+      renderTrendChart();
+      updateProgress();
+    }
+
+    /* ==========================================================================
+       STRENGTH WORKOUTS (SESSION-BASED FBW 1 & FBW 2) LOGIC
+       ========================================================================== */
+    function renderSessionSelectDropdown() {
+      const select = document.getElementById('strength-session-select');
+      if (!select) return;
+      select.innerHTML = '';
+
+      STRENGTH_SESSIONS_META.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.id;
+        
+        // check if this session is marked done
+        const sessionObj = appState.strengthSessions[s.id];
+        const isDone = sessionObj && sessionObj.completed;
+        opt.textContent = `${s.label} ${isDone ? '✓ (בוצע)' : ''}`;
+        if (s.id === appState.activeStrengthSessionId) {
+          opt.selected = true;
+        }
+        select.appendChild(opt);
+      });
+
+      updateActiveSessionBanner();
+    }
+
+    function selectStrengthSession(sessionId) {
+      appState.activeStrengthSessionId = sessionId;
+      const meta = STRENGTH_SESSIONS_META.find(s => s.id === sessionId);
+      if (meta) {
+        appState.activeFbw = meta.program;
+        document.getElementById('btn-show-fbw1').classList.toggle('active', meta.program === 'fbw1');
+        document.getElementById('btn-show-fbw2').classList.toggle('active', meta.program === 'fbw2');
+      }
+      updateActiveSessionBanner();
+      renderFbwExercises();
+    }
+
+    function updateActiveSessionBanner() {
+      const bannerTitle = document.getElementById('active-session-title');
+      const badge = document.getElementById('active-session-status-badge');
+      if (!bannerTitle || !badge) return;
+
+      const meta = STRENGTH_SESSIONS_META.find(s => s.id === appState.activeStrengthSessionId);
+      const sessionObj = appState.strengthSessions[appState.activeStrengthSessionId];
+      const isDone = sessionObj && sessionObj.completed;
+
+      if (meta) {
+        bannerTitle.textContent = `מתעד עבור: ${meta.name} | ${meta.program === 'fbw1' ? 'תוכנית FBW 1' : 'תוכנית FBW 2'}`;
+      }
+      if (isDone) {
+        badge.textContent = 'אימון זה הושלם ✓';
+        badge.style.background = '#dcfce7';
+        badge.style.color = '#166534';
+      } else {
+        badge.textContent = 'טרם סומן כהושלם';
+        badge.style.background = '#e2e8f0';
+        badge.style.color = '#475569';
+      }
+    }
+
+    function openStrengthSessionForWorkout(workoutId) {
+      // Find session meta matching this workout
+      const meta = STRENGTH_SESSIONS_META.find(s => s.id === workoutId);
+      if (meta) {
+        appState.activeStrengthSessionId = meta.id;
+        appState.activeFbw = meta.program;
+      }
+      // Switch to Strength Tab
+      const strengthTabBtn = document.querySelectorAll('.tab-btn')[1]; // 2nd tab is strength
+      switchTab('strength', strengthTabBtn);
+      selectStrengthSession(appState.activeStrengthSessionId);
+      
+      // Scroll smoothly to session container
+      const container = document.getElementById('tab-strength');
+      if (container) container.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function switchFbw(fbwKey) {
+      appState.activeFbw = fbwKey;
+      document.getElementById('btn-show-fbw1').classList.toggle('active', fbwKey === 'fbw1');
+      document.getElementById('btn-show-fbw2').classList.toggle('active', fbwKey === 'fbw2');
+
+      // if current session does not match this fbw, switch to free session or first matching
+      const currentMeta = STRENGTH_SESSIONS_META.find(s => s.id === appState.activeStrengthSessionId);
+      if (currentMeta && currentMeta.program !== fbwKey) {
+        const match = STRENGTH_SESSIONS_META.find(s => s.program === fbwKey);
+        if (match) {
+          appState.activeStrengthSessionId = match.id;
+          renderSessionSelectDropdown();
+        }
+      }
+      renderFbwExercises();
+    }
+
+    function ensureSessionData(sessionId, fbwKey) {
+      if (!appState.strengthSessions[sessionId]) {
+        const meta = STRENGTH_SESSIONS_META.find(s => s.id === sessionId);
+        appState.strengthSessions[sessionId] = {
+          sessionId: sessionId,
+          program: fbwKey,
+          completed: false,
+          notes: '',
+          exercises: {}
+        };
+      }
+      const sessionObj = appState.strengthSessions[sessionId];
+      const prog = FBW_PROGRAMS[fbwKey];
+
+      // determine default sets (week 4 peak has 2 sets for deload/taper)
+      const isWeek4 = (sessionId === 'w4-1' || sessionId === 'w4-3');
+
+      prog.exercises.forEach(ex => {
+        if (!sessionObj.exercises[ex.id]) {
+          sessionObj.exercises[ex.id] = [];
+          const numSets = isWeek4 ? 2 : ex.defaultSets;
+          for (let s = 0; s < numSets; s++) {
+            sessionObj.exercises[ex.id].push({ weight: '', reps: '', done: false });
+          }
+        }
+      });
+      return sessionObj;
+    }
+
+    function renderFbwExercises() {
+      const container = document.getElementById('fbw-exercises-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const currentSessionId = appState.activeStrengthSessionId;
+      const currentFbw = appState.activeFbw;
+      const prog = FBW_PROGRAMS[currentFbw];
+      if (!prog) return;
+
+      const sessionObj = ensureSessionData(currentSessionId, currentFbw);
+
+      prog.exercises.forEach((ex, exIdx) => {
+        const card = document.createElement('div');
+        card.className = 'exercise-card';
+
+        const setsData = sessionObj.exercises[ex.id] || [];
+
+        let tableRowsHtml = '';
+        setsData.forEach((setData, sIdx) => {
+          tableRowsHtml += `
+            <tr>
+              <td style="font-weight: 700; color: var(--slate-700);">סט ${sIdx + 1}</td>
+              <td>
+                <input type="text" class="set-input" placeholder="ק\"ג" value="${setData.weight || ''}" onchange="updateSessionSetData('${currentSessionId}', '${ex.id}', ${sIdx}, 'weight', this.value)">
+              </td>
+              <td>
+                <input type="text" class="set-input" placeholder="חזרות" value="${setData.reps || ''}" onchange="updateSessionSetData('${currentSessionId}', '${ex.id}', ${sIdx}, 'reps', this.value)">
+              </td>
+              <td>
+                <input type="checkbox" style="width: 18px; height: 18px; cursor: pointer; accent-color: #10b981;" ${setData.done ? 'checked' : ''} onchange="updateSessionSetData('${currentSessionId}', '${ex.id}', ${sIdx}, 'done', this.checked)">
+              </td>
+            </tr>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="exercise-top">
+            <div>
+              <div class="exercise-name">${exIdx + 1}. ${ex.name}</div>
+              <div class="exercise-target">🎯 שרירי יעד: ${ex.target}</div>
+            </div>
+            <span class="equipment-pill">🏋️ ${ex.equipment}</span>
+          </div>
+
+          <div class="prescription-box">
+            📋 מרשם עבודה: ${ex.prescription}
+          </div>
+
+          <div class="exercise-cues">
+            <strong>דגשי ביצוע ובטיחות לגיד:</strong> ${ex.cues}
+          </div>
+
+          <div style="background: white; border-radius: 8px; overflow: hidden; margin-top: 10px;">
+            <table class="sets-table">
+              <thead>
+                <tr>
+                  <th style="width: 25%;">סט</th>
+                  <th style="width: 30%;">משקל עבודה</th>
+                  <th style="width: 30%;">חזרות שבוצעו</th>
+                  <th style="width: 15%;">בוצע ✓</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tableRowsHtml}
+              </tbody>
+            </table>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function updateSessionSetData(sessionId, exId, setIdx, field, val) {
+      if (!appState.strengthSessions[sessionId]) return;
+      if (!appState.strengthSessions[sessionId].exercises[exId]) return;
+      if (!appState.strengthSessions[sessionId].exercises[exId][setIdx]) {
+        appState.strengthSessions[sessionId].exercises[exId][setIdx] = { weight: '', reps: '', done: false };
+      }
+      appState.strengthSessions[sessionId].exercises[exId][setIdx][field] = val;
+      try {
+        localStorage.setItem('achilles_strength_sessions_data', JSON.stringify(appState.strengthSessions));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function markCurrentStrengthSessionCompleted() {
+      const sessionId = appState.activeStrengthSessionId;
+      if (!appState.strengthSessions[sessionId]) {
+        ensureSessionData(sessionId, appState.activeFbw);
+      }
+      appState.strengthSessions[sessionId].completed = true;
+
+      // Also mark all sets as done
+      const sessionObj = appState.strengthSessions[sessionId];
+      Object.keys(sessionObj.exercises).forEach(exId => {
+        sessionObj.exercises[exId].forEach(s => s.done = true);
+      });
+
+      // Synchronize with the 5-week schedule workout
+      const wIdx = appState.workouts.findIndex(w => w.id === sessionId);
+      if (wIdx >= 0) {
+        appState.workouts[wIdx].status = 'completed';
+      }
+
+      saveState();
+      alert('🎉 מעולה! אימון הכוח נשמר בהצלחה וסומן כ"בוצע" בלוח 5 השבועות!');
+    }
+
+    function toggleProgressionView() {
+      appState.showProgression = !appState.showProgression;
+      const card = document.getElementById('progression-table-card');
+      const btn = document.getElementById('btn-toggle-progression');
+      if (!card) return;
+
+      if (appState.showProgression) {
+        card.style.display = 'block';
+        btn.textContent = 'הסתר טבלת התקדמות ✕';
+        renderProgressionTable();
+      } else {
+        card.style.display = 'none';
+        btn.textContent = '📊 טבלת התקדמות משקלים (שבועות 1–4)';
+      }
+    }
+
+    function renderProgressionTable() {
+      const table = document.getElementById('progression-comparison-table');
+      if (!table) return;
+
+      // Weeks 1 to 4 sessions for FBW 1 and FBW 2
+      const prog = FBW_PROGRAMS[appState.activeFbw];
+      let theadHtml = `
+        <thead>
+          <tr>
+            <th style="text-align: right;">תרגיל</th>
+            <th>שבוע 1</th>
+            <th>שבוע 2</th>
+            <th>שבוע 3</th>
+            <th>שבוע 4 (שיא)</th>
+          </tr>
+        </thead>
+      `;
+
+      // Session IDs across weeks for current program
+      let sessionIds = [];
+      if (appState.activeFbw === 'fbw1') {
+        sessionIds = ['w1-1', 'w2-1', 'w3-1', 'w4-1'];
+      } else {
+        sessionIds = ['w1-3', 'w2-3', 'w3-3', 'w4-3'];
+      }
+
+      let tbodyHtml = '<tbody>';
+      prog.exercises.forEach(ex => {
+        tbodyHtml += `<tr><td style="font-weight: 700; text-align: right;">${ex.name}</td>`;
+        sessionIds.forEach(sId => {
+          const sObj = appState.strengthSessions[sId];
+          let valStr = '-';
+          if (sObj && sObj.exercises && sObj.exercises[ex.id]) {
+            const logged = sObj.exercises[ex.id].filter(st => st.weight && st.reps);
+            if (logged.length > 0) {
+              valStr = logged.map(st => `${st.weight}ק"ג × ${st.reps}`).join('<br>');
+            } else if (sObj.completed) {
+              valStr = 'בוצע ✓';
+            }
+          }
+          tbodyHtml += `<td style="font-size: 0.8rem; color: var(--slate-700);">${valStr}</td>`;
+        });
+        tbodyHtml += '</tr>';
+      });
+      tbodyHtml += '</tbody>';
+
+      table.innerHTML = theadHtml + tbodyHtml;
+    }
+
+    /* ==========================================================================
+       COUNTDOWN TIMER & CURRENT WEEK
+       ========================================================================== */
+    function updateCurrentWeekBadge() {
+      const now = new Date();
+      const d2 = new Date('2026-09-23T00:00:00+03:00');
+      const d3 = new Date('2026-09-30T00:00:00+03:00');
+      const d4 = new Date('2026-10-07T00:00:00+03:00');
+      const d5 = new Date('2026-10-14T00:00:00+03:00');
+      const race = new Date('2026-10-23T23:59:59+03:00');
+
+      let weekText = 'שבוע 1 מתוך 5: ביסוס סובלנות והפרדת עומסים';
+      if (now >= d5 && now <= race) {
+        weekText = 'שבוע 5 מתוך 5: טייפר, שיוף ויום המירוץ!';
+      } else if (now >= d4) {
+        weekText = 'שבוע 4 מתוך 5: שבוע שיא (Peak Volume)';
+      } else if (now >= d3) {
+        weekText = 'שבוע 3 מתוך 5: בניית סף ורציפות';
+      } else if (now >= d2) {
+        weekText = 'שבוע 2 מתוך 5: עליית נפח ועבודת סולאוס HSR';
+      }
+      const el = document.getElementById('current-week-display');
+      if (el) el.textContent = weekText;
+    }
+
+    function initCountdown() {
+      function updateClock() {
+        const now = new Date();
+        const diff = RACE_DATE - now;
+
+        if (diff <= 0) {
+          document.getElementById('cd-days').textContent = '00';
+          document.getElementById('cd-hours').textContent = '00';
+          document.getElementById('cd-minutes').textContent = '00';
+          document.getElementById('cd-seconds').textContent = '00';
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / 1000 / 60) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
+        document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('cd-minutes').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('cd-seconds').textContent = String(seconds).padStart(2, '0');
+      }
+
+      updateClock();
+      setInterval(updateClock, 1000);
+    }
+
+    /* ==========================================================================
+       STATUS & 24-HOUR TENDON LOGIC
+       ========================================================================== */
+    function calculateStatus(pain, stiffness, sharpPain) {
+      if (sharpPain || pain > 4 || stiffness > 20) {
+        return 'red';
+      }
+      if (pain === 4 || (stiffness >= 10 && stiffness <= 20)) {
+        return 'yellow';
+      }
+      return 'green';
+    }
+
+    function updateGlobalStatus() {
+      let latestLog = null;
+      if (appState.logs && appState.logs.length > 0) {
+        const sorted = [...appState.logs].sort((a, b) => new Date(b.date) - new Date(a.date));
+        latestLog = sorted[0];
+      }
+
+      const statusPill = document.getElementById('global-status-pill');
+      const statusText = document.getElementById('global-status-text');
+      const redBanner = document.getElementById('schedule-red-banner');
+
+      let currentStatus = 'green';
+      if (latestLog) {
+        currentStatus = calculateStatus(latestLog.morningPain, latestLog.stiffness, latestLog.sharpPain);
+      }
+      appState.latestStatus = currentStatus;
+
+      statusPill.className = 'status-pill ' + currentStatus;
+      
+      if (currentStatus === 'green') {
+        statusText.textContent = 'סטטוס גיד 24 שעות: תקין (Green)';
+        if (redBanner) redBanner.style.display = 'none';
+      } else if (currentStatus === 'yellow') {
+        statusText.textContent = 'סטטוס גיד 24 שעות: גבולי (Yellow - שמור נפח)';
+        if (redBanner) redBanner.style.display = 'none';
+      } else {
+        statusText.textContent = 'סטטוס גיד 24 שעות: התלקחות (Red - המר לספינינג)';
+        if (redBanner) redBanner.style.display = 'flex';
+      }
+
+      updateTrackerLiveFeedback();
+    }
+
+    function updateTrackerLiveFeedback() {
+      const stiffness = parseFloat(document.getElementById('log-stiffness').value);
+      const mPain = parseFloat(document.getElementById('log-morning-pain').value);
+      const sharp = document.getElementById('log-sharp-pain').checked;
+
+      const calc = calculateStatus(mPain, stiffness, sharp);
+      const box = document.getElementById('live-feedback-box');
+      const title = document.getElementById('feedback-status-title');
+      const desc = document.getElementById('feedback-desc');
+      const icon = document.getElementById('feedback-icon');
+
+      box.className = 'alert alert-' + calc;
+      if (calc === 'green') {
+        icon.textContent = '🟢';
+        title.textContent = 'סטטוס מחושב: ירוק (סבילות תקינה)';
+        desc.textContent = 'הגיד מתאושש באופן פיזיולוגי תקין. כאב בוקר נמוך מ-3 ונוקשות בוקר מתחת ל-10 דקות. ניתן להמשיך בתוכנית האימונים המתוכננת ללא שינוי.';
+      } else if (calc === 'yellow') {
+        icon.textContent = '🟡';
+        title.textContent = 'סטטוס מחושב: צהוב (עומס גבולי - שמירת נפח)';
+        desc.textContent = 'תגובת סף של הגיד (כאב 4/10 או נוקשות 10–20 דקות). יש לשמור על הנפח הקיים, להימנע מהארכת אינטרוולים בריצה, ולוודא ביצוע 4 סטים החזקה איזומטרית.';
+      } else {
+        icon.textContent = '🔴';
+        title.textContent = 'סטטוס מחושב: אדום (התלקחות / רגישות יתר)';
+        desc.textContent = "הגיד ברגישות יתר (כאב > 4, נוקשות > 20 דקות או כאב בהליכה). המר את אימון הריצה הקרוב בספינינג Zone 2 (45 דק') ו-4 סטים של החזקה איזומטרית ל-45 שניות!";
+      }
+    }
+
+    function updateRangeVal(type, val) {
+      if (type === 'stiffness') {
+        document.getElementById('badge-stiffness').textContent = val + " דק'";
+      } else if (type === 'morning-pain') {
+        document.getElementById('badge-morning-pain').textContent = parseFloat(val).toFixed(1);
+      } else if (type === 'post-pain') {
+        document.getElementById('badge-post-pain').textContent = parseFloat(val).toFixed(1);
+      }
+      updateTrackerLiveFeedback();
+    }
+
+    function saveDailyTendonLog(e) {
+      e.preventDefault();
+      const date = document.getElementById('log-date').value;
+      const stiffness = parseInt(document.getElementById('log-stiffness').value, 10);
+      const morningPain = parseFloat(document.getElementById('log-morning-pain').value);
+      const postPain = parseFloat(document.getElementById('log-post-pain').value);
+      const sharpPain = document.getElementById('log-sharp-pain').checked;
+      const notes = document.getElementById('log-notes').value.trim();
+
+      const existingIdx = appState.logs.findIndex(l => l.date === date);
+      const newEntry = {
+        id: 'log-' + Date.now(),
+        date,
+        stiffness,
+        morningPain,
+        postPain,
+        sharpPain,
+        notes
+      };
+
+      if (existingIdx >= 0) {
+        appState.logs[existingIdx] = newEntry;
+      } else {
+        appState.logs.push(newEntry);
+      }
+
+      saveState();
+      alert('הדיווח היומי נשמר בהצלחה ועודכן בלוח הבקרה!');
+      document.getElementById('log-notes').value = '';
+    }
+
+    function deleteLog(logId) {
+      if (confirm('האם למחוק דיווח זה?')) {
+        appState.logs = appState.logs.filter(l => l.id !== logId);
+        saveState();
+      }
+    }
+
+    function renderHistoryTable() {
+      const tbody = document.getElementById('history-table-body');
+      tbody.innerHTML = '';
+
+      const sorted = [...appState.logs].sort((a, b) => new Date(b.date) - new Date(a.date));
+      document.getElementById('log-counter').textContent = sorted.length + ' דיווחים';
+
+      if (sorted.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 16px;">טרם תועדו דיווחים יומיים</td></tr>';
+        return;
+      }
+
+      sorted.forEach(item => {
+        const tr = document.createElement('tr');
+        const st = calculateStatus(item.morningPain, item.stiffness, item.sharpPain);
+        
+        let statusBadge = '';
+        if (st === 'green') statusBadge = '<span style="color:#059669; font-weight:700;">🟢 תקין</span>';
+        else if (st === 'yellow') statusBadge = '<span style="color:#d97706; font-weight:700;">🟡 גבולי</span>';
+        else statusBadge = '<span style="color:#dc2626; font-weight:700;">🔴 התלקחות</span>';
+
+        tr.innerHTML = `
+          <td style="font-weight: 600;">${item.date}</td>
+          <td>${item.morningPain.toFixed(1)}/10</td>
+          <td>${item.stiffness} דק'</td>
+          <td>${item.postPain.toFixed(1)}/10</td>
+          <td>${statusBadge}</td>
+          <td><button class="btn-delete-log" onclick="deleteLog('${item.id}')" title="מחק דיווח">🗑️</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    /* ==========================================================================
+       TREND CHART (SVG)
+       ========================================================================== */
+    function renderTrendChart() {
+      const container = document.getElementById('chart-area');
+      const sorted = [...appState.logs].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+      if (sorted.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding: 40px; color:#94a3b8;">אין עדיין מספיק נתונים להצגת גרף מגמה. הוסף דיווח יומי כדי להתחיל.</div>';
+        return;
+      }
+
+      const width = 800;
+      const height = 220;
+      const padding = { top: 20, right: 30, bottom: 40, left: 45 };
+      const chartW = width - padding.left - padding.right;
+      const chartH = height - padding.top - padding.bottom;
+
+      const n = sorted.length;
+      const xStep = n > 1 ? chartW / (n - 1) : chartW / 2;
+
+      function yPain(val) {
+        return padding.top + chartH - (val / 10) * chartH;
+      }
+
+      const greenTop = yPain(3);
+      const greenH = (padding.top + chartH) - greenTop;
+
+      const yellowTop = yPain(4);
+      const yellowH = greenTop - yellowTop;
+
+      const redTop = yPain(10);
+      const redH = yellowTop - redTop;
+
+      let pointsPain = [];
+      let pointsStiffness = [];
+      let xLabels = [];
+
+      sorted.forEach((d, idx) => {
+        const x = n > 1 ? padding.right + (idx * xStep) : padding.right + chartW / 2;
+        const yp = yPain(d.morningPain);
+        const ys = padding.top + chartH - (Math.min(d.stiffness, 30) / 30) * chartH;
+        pointsPain.push(`${x},${yp}`);
+        pointsStiffness.push(`${x},${ys}`);
+        xLabels.push(`<text x="${x}" y="${height - 10}" text-anchor="middle" font-size="10" fill="#64748b">${d.date.slice(5)}</text>`);
+      });
+
+      const polyPain = pointsPain.join(' ');
+      const polyStiff = pointsStiffness.join(' ');
+
+      let svg = `
+        <svg viewBox="0 0 ${width} ${height}" style="width: 100%; height: 100%; overflow: visible;" xmlns="http://www.w3.org/2000/svg">
+          <rect x="${padding.right}" y="${redTop}" width="${chartW}" height="${redH}" fill="#fee2e2" opacity="0.4" />
+          <rect x="${padding.right}" y="${yellowTop}" width="${chartW}" height="${yellowH}" fill="#fef3c7" opacity="0.4" />
+          <rect x="${padding.right}" y="${greenTop}" width="${chartW}" height="${greenH}" fill="#d1fae5" opacity="0.4" />
+
+          <line x1="${padding.right}" y1="${greenTop}" x2="${width - padding.left}" y2="${greenTop}" stroke="#10b981" stroke-dasharray="4" stroke-width="1.5" />
+          <text x="${width - padding.left + 5}" y="${greenTop + 4}" font-size="10" fill="#059669" font-weight="700">סף יעד (3)</text>
+
+          <line x1="${padding.right}" y1="${padding.top}" x2="${padding.right}" y2="${padding.top + chartH}" stroke="#cbd5e1" stroke-width="1" />
+          <line x1="${padding.right}" y1="${padding.top + chartH}" x2="${width - padding.left}" y2="${padding.top + chartH}" stroke="#cbd5e1" stroke-width="1" />
+          
+          <text x="${padding.right - 8}" y="${yPain(0) + 3}" text-anchor="end" font-size="10" fill="#64748b">0</text>
+          <text x="${padding.right - 8}" y="${yPain(3) + 3}" text-anchor="end" font-size="10" fill="#059669" font-weight="600">3</text>
+          <text x="${padding.right - 8}" y="${yPain(5) + 3}" text-anchor="end" font-size="10" fill="#64748b">5</text>
+          <text x="${padding.right - 8}" y="${yPain(10) + 3}" text-anchor="end" font-size="10" fill="#dc2626" font-weight="600">10</text>
+
+          <polyline fill="none" stroke="#2563eb" stroke-width="3" points="${polyPain}" stroke-linejoin="round" />
+          <polyline fill="none" stroke="#9333ea" stroke-width="2" stroke-dasharray="3,3" points="${polyStiff}" stroke-linejoin="round" />
+
+          ${sorted.map((d, idx) => {
+            const x = n > 1 ? padding.right + (idx * xStep) : padding.right + chartW / 2;
+            const yp = yPain(d.morningPain);
+            return `
+              <circle cx="${x}" cy="${yp}" r="5" fill="#2563eb" stroke="white" stroke-width="2">
+                <title>${d.date}: כאב בוקר ${d.morningPain}/10, נוקשות ${d.stiffness} דק'</title>
+              </circle>
+            `;
+          }).join('')}
+
+          ${xLabels.join('')}
+        </svg>
+
+        <div style="display: flex; justify-content: center; gap: 20px; font-size: 0.8rem; margin-top: 6px;">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span style="display:inline-block; width:12px; height:12px; background:#2563eb; border-radius:50%;"></span>
+            <span>כאב בוקר בגיד (0–10)</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span style="display:inline-block; width:12px; height:2px; background:#9333ea; border-top:2px dashed #9333ea;"></span>
+            <span>נוקשות בוקר (דקות)</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span style="display:inline-block; width:12px; height:12px; background:#10b981; opacity:0.6; border-radius:2px;"></span>
+            <span>אזור ירוק בטוח (כאב ≤ 3)</span>
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = svg;
+    }
+
+    /* ==========================================================================
+       WORKOUT SCHEDULE RENDERING & ACTIONS
+       ========================================================================== */
+    function filterWeek(weekNum, btnEl) {
+      appState.activeWeekFilter = weekNum;
+      document.querySelectorAll('.week-filter-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      renderWorkouts();
+    }
+
+    function renderWorkouts() {
+      const container = document.getElementById('workouts-container');
+      container.innerHTML = '';
+
+      const weeks = [1, 2, 3, 4, 5];
+      const isRedAlert = (appState.latestStatus === 'red');
+
+      weeks.forEach(wNum => {
+        if (appState.activeWeekFilter !== 'all' && appState.activeWeekFilter !== String(wNum)) {
+          return;
+        }
+
+        const weekWorkouts = appState.workouts.filter(w => w.week === wNum);
+        if (weekWorkouts.length === 0) return;
+
+        const weekSec = document.createElement('div');
+        weekSec.className = 'week-section';
+
+        let weekHeading = '';
+        let weekDates = '';
+        if (wNum === 1) { weekHeading = 'שבוע 1: ביסוס סובלנות עומס, אירובי ואימוני כוח FBW 1 & 2'; weekDates = '16–22 בספטמבר 2026'; }
+        if (wNum === 2) { weekHeading = 'שבוע 2: עליית נפח הדרגתית, סולאוס HSR ו-FBW מלא'; weekDates = '23–29 בספטמבר 2026'; }
+        if (wNum === 3) { weekHeading = 'שבוע 3: בניית סף ורציפות (פריצת רציפות ראשונה)'; weekDates = '30 בספטמבר – 6 באוקטובר 2026'; }
+        if (wNum === 4) { weekHeading = 'שבוע 4: שבוע שיא (Peak Volume, Race Pace וכוח מתון)'; weekDates = '7–13 באוקטובר 2026'; }
+        if (wNum === 5) { weekHeading = 'שבוע 5: טייפר, שיוף מהירות ויום המירוץ!'; weekDates = '14–23 באוקטובר 2026'; }
+
+        weekSec.innerHTML = `
+          <div class="week-header-banner">
+            <div class="week-title">${weekHeading}</div>
+            <div class="week-dates">${weekDates}</div>
+          </div>
+          <div class="workouts-grid" id="grid-week-${wNum}"></div>
+        `;
+
+        container.appendChild(weekSec);
+        const grid = weekSec.querySelector(`#grid-week-${wNum}`);
+
+        weekWorkouts.forEach(workout => {
+          const card = document.createElement('div');
+          card.className = `workout-card ${workout.status}`;
+
+          let pillClass = 'pill-spin';
+          if (workout.type === 'run') pillClass = 'pill-run';
+          if (workout.type === 'race') pillClass = 'pill-race';
+          if (workout.type === 'rest') pillClass = 'pill-rest';
+
+          const showOverride = (isRedAlert && workout.isRun && workout.status === 'pending');
+
+          card.innerHTML = `
+            <div>
+              <div class="workout-top">
+                <div>
+                  <div class="workout-day">${workout.dayName}</div>
+                  <div class="workout-date-small">${workout.dateStr}</div>
+                </div>
+                <span class="workout-type-pill ${pillClass}">${workout.typeName}</span>
+              </div>
+
+              <div class="workout-title">${workout.title}</div>
+              <div class="workout-tag">📌 ${workout.focusTag}</div>
+              <div class="workout-desc">${workout.desc}</div>
+
+              ${showOverride ? `
+                <div class="red-override-notice active">
+                  <strong>⚠️ התרעת עומס פעילה:</strong><br>
+                  הגיד ברגישות יתר. מומלץ להמיר אימון זה לרכיבת ספינינג Zone 2 (45 דק') + 4 סטים של החזקה איזומטרית.
+                  <div>
+                    <button class="btn-override" onclick="adaptWorkoutToSpin('${workout.id}')">המר אימון לאופניים עכשיו</button>
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+
+            <div>
+              <div style="font-size: 0.75rem; color: var(--slate-600); margin-bottom: 4px; font-weight: 600;">סטטוס ביצוע:</div>
+              <div class="status-select-wrapper">
+                <button class="status-radio-label ${workout.status === 'pending' ? 'selected-pending' : ''}" onclick="setWorkoutStatus('${workout.id}', 'pending')">טרם בוצע</button>
+                <button class="status-radio-label ${workout.status === 'completed' ? 'selected-completed' : ''}" onclick="setWorkoutStatus('${workout.id}', 'completed')">בוצע ✓</button>
+                <button class="status-radio-label ${workout.status === 'modified' ? 'selected-modified' : ''}" onclick="setWorkoutStatus('${workout.id}', 'modified')">הותאם</button>
+                <button class="status-radio-label ${workout.status === 'skipped' ? 'selected-skipped' : ''}" onclick="setWorkoutStatus('${workout.id}', 'skipped')">דולג</button>
+              </div>
+
+              <input type="text" class="workout-notes-input" placeholder="הערות אימון (קצב, נעליים, כאב)..." value="${workout.notes || ''}" onchange="updateWorkoutNotes('${workout.id}', this.value)">
+
+              ${workout.strengthSessionId ? `
+                <button class="btn btn-secondary" style="margin-top: 8px; width: 100%; font-size: 0.78rem; padding: 6px 10px; display: flex; align-items: center; justify-content: center; gap: 6px; background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe;" onclick="openStrengthSessionForWorkout('${workout.id}')">
+                  🏋️ פתח יומן אימון ${workout.fbwType === 'fbw1' ? 'FBW 1' : 'FBW 2'} למועד זה
+                </button>
+              ` : ''}
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      });
+    }
+
+    function setWorkoutStatus(workoutId, status) {
+      const idx = appState.workouts.findIndex(w => w.id === workoutId);
+      if (idx >= 0) {
+        appState.workouts[idx].status = status;
+        saveState();
+      }
+    }
+
+    function updateWorkoutNotes(workoutId, notes) {
+      const idx = appState.workouts.findIndex(w => w.id === workoutId);
+      if (idx >= 0) {
+        appState.workouts[idx].notes = notes;
+        saveState();
+      }
+    }
+
+    function adaptWorkoutToSpin(workoutId) {
+      const idx = appState.workouts.findIndex(w => w.id === workoutId);
+      if (idx >= 0) {
+        appState.workouts[idx].title = "ספינינג מותאם 45 דק' + 4 סטים החזקה איזומטרית (החלפת ריצה בעקבות התרעת עומס)";
+        appState.workouts[idx].desc = "האימון הומר לספינינג נפח Zone 2 רציף בישיבה בלבד (פדל במרכז כף הרגל) + 4 סטים של 45 שניות החזקה איזומטרית סטטית להפחתת עומס מתיחה-קיצור והשגת שיכוך כאב.";
+        appState.workouts[idx].type = 'spin';
+        appState.workouts[idx].typeName = 'ספינינג מותאם (עומס אדום)';
+        appState.workouts[idx].status = 'modified';
+        appState.workouts[idx].isRun = false;
+        saveState();
+        alert('האימון הותאם בהצלחה לספינינג והחזקות איזומטריות!');
+      }
+    }
+
+    function updateProgress() {
+      const total = appState.workouts.length;
+      const completed = appState.workouts.filter(w => w.status === 'completed' || w.status === 'modified').length;
+      const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+      document.getElementById('overall-progress-bar').style.width = percent + '%';
+      document.getElementById('progress-percent').textContent = percent + '%';
+      document.getElementById('progress-text-detail').textContent = `הושלמו או הותאמו ${completed} מתוך ${total} אימונים מתוזמנים`;
+      document.getElementById('completed-counter').textContent = `${completed}/${total}`;
+    }
+
+    /* ==========================================================================
+       TAB SWITCHING
+       ========================================================================== */
+    function switchTab(tabKey, btnEl) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+      const target = document.getElementById('tab-' + tabKey);
+      if (target) target.classList.add('active');
+      if (btnEl) btnEl.classList.add('active');
+
+      if (tabKey === 'tracker') {
+        setTimeout(renderTrendChart, 50);
+      }
+      if (tabKey === 'strength') {
+        renderFbwExercises();
+      }
+    }
+
+    /* ==========================================================================
+       RUN/WALK INTERVAL TIMER & WEB AUDIO ENGINE
+       ========================================================================== */
+    let audioCtx = null;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playBeep(frequency = 600, duration = 0.15, count = 1) {
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+
+        for (let i = 0; i < count; i++) {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(frequency, ctx.currentTime + (i * 0.18));
+          
+          gain.gain.setValueAtTime(0.3, ctx.currentTime + (i * 0.18));
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (i * 0.18) + duration);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.start(ctx.currentTime + (i * 0.18));
+          osc.stop(ctx.currentTime + (i * 0.18) + duration);
+        }
+      } catch (e) {
+        console.warn('Audio play error:', e);
+      }
+    }
+
+    let timerConfig = {
+      runSec: 4 * 60,
+      walkSec: 1 * 60,
+      totalReps: 8
+    };
+
+    let timerState = {
+      isRunning: false,
+      isPaused: false,
+      currentRep: 1,
+      currentPhase: 'run',
+      secondsRemaining: 4 * 60,
+      elapsedTotalSec: 0,
+      intervalId: null
+    };
+
+    function selectPreset(runMin, walkMin, reps, btnEl) {
+      pauseTimer();
+      timerConfig.runSec = runMin * 60;
+      timerConfig.walkSec = walkMin * 60;
+      timerConfig.totalReps = reps;
+
+      document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+
+      resetIntervalTimer();
+    }
+
+    function resetIntervalTimer() {
+      pauseTimer();
+      timerState.currentRep = 1;
+      timerState.currentPhase = 'run';
+      timerState.secondsRemaining = timerConfig.runSec;
+      timerState.elapsedTotalSec = 0;
+      updateTimerUI();
+    }
+
+    function toggleTimer() {
+      getAudioContext();
+      if (!timerState.isRunning || timerState.isPaused) {
+        startIntervalTimer();
+      }
+    }
+
+    function startIntervalTimer() {
+      timerState.isRunning = true;
+      timerState.isPaused = false;
+      document.getElementById('btn-timer-start').style.display = 'none';
+      document.getElementById('btn-timer-pause').style.display = 'inline-flex';
+
+      playBeep(880, 0.2, 1);
+
+      if (timerState.intervalId) clearInterval(timerState.intervalId);
+
+      timerState.intervalId = setInterval(() => {
+        timerState.secondsRemaining--;
+        timerState.elapsedTotalSec++;
+
+        if (timerState.secondsRemaining === 3 || timerState.secondsRemaining === 2 || timerState.secondsRemaining === 1) {
+          playBeep(520, 0.1);
+        }
+
+        if (timerState.secondsRemaining <= 0) {
+          switchIntervalSegment();
+        }
+
+        updateTimerUI();
+      }, 1000);
+
+      updateTimerUI();
+    }
+
+    function pauseTimer() {
+      timerState.isPaused = true;
+      if (timerState.intervalId) clearInterval(timerState.intervalId);
+      document.getElementById('btn-timer-start').style.display = 'inline-flex';
+      document.getElementById('btn-timer-pause').style.display = 'none';
+    }
+
+    function switchIntervalSegment() {
+      if (timerState.currentPhase === 'run') {
+        timerState.currentPhase = 'walk';
+        timerState.secondsRemaining = timerConfig.walkSec;
+        playBeep(440, 0.3, 2);
+      } else {
+        timerState.currentRep++;
+        if (timerState.currentRep > timerConfig.totalReps) {
+          pauseTimer();
+          timerState.secondsRemaining = 0;
+          playBeep(988, 0.4, 3);
+          alert('🎉 כל הכבוד! אימון האינטרוולים הושלם בהצלחה!');
+          return;
+        }
+        timerState.currentPhase = 'run';
+        timerState.secondsRemaining = timerConfig.runSec;
+        playBeep(880, 0.25, 2);
+      }
+    }
+
+    function skipInterval() {
+      getAudioContext();
+      switchIntervalSegment();
+      updateTimerUI();
+    }
+
+    function formatTimeMMSS(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function updateTimerUI() {
+      const badge = document.getElementById('timer-badge');
+      const display = document.getElementById('timer-display');
+      const subtext = document.getElementById('timer-subtext');
+
+      display.textContent = formatTimeMMSS(timerState.secondsRemaining);
+      subtext.textContent = `אינטרוול ${timerState.currentRep} מתוך ${timerConfig.totalReps} | סה"כ זמן שחלף: ${formatTimeMMSS(timerState.elapsedTotalSec)}`;
+
+      if (!timerState.isRunning && !timerState.isPaused) {
+        badge.className = 'timer-phase-badge phase-idle';
+        badge.textContent = 'מוכן להתחלה';
+      } else if (timerState.currentPhase === 'run') {
+        badge.className = 'timer-phase-badge phase-running';
+        badge.textContent = '🏃 מקטע ריצה קלה';
+      } else {
+        badge.className = 'timer-phase-badge phase-walking';
+        badge.textContent = '🚶 מקטע הליכה מהירה והתאוששות';
+      }
+    }
+
+    /* ==========================================================================
+       CADENCE METRONOME
+       ========================================================================== */
+    let cadenceBpm = 175;
+    let cadenceInterval = null;
+    let isCadenceActive = false;
+
+    function updateCadenceVal(bpm) {
+      cadenceBpm = parseInt(bpm, 10);
+      document.getElementById('cadence-display').textContent = cadenceBpm + ' SPM';
+      if (isCadenceActive) {
+        restartCadence();
+      }
+    }
+
+    function toggleCadence() {
+      getAudioContext();
+      const btn = document.getElementById('btn-cadence-toggle');
+      if (isCadenceActive) {
+        stopCadence();
+        btn.innerHTML = '<span>🎵</span> הפעל מטרונום';
+      } else {
+        startCadence();
+        btn.innerHTML = '<span>⏹️</span> עצור מטרונום';
+      }
+    }
+
+    function startCadence() {
+      isCadenceActive = true;
+      const intervalMs = (60 / cadenceBpm) * 1000;
+      const light = document.getElementById('metronome-light');
+
+      cadenceInterval = setInterval(() => {
+        playBeep(1000, 0.04);
+        light.classList.add('flash');
+        setTimeout(() => light.classList.remove('flash'), 50);
+      }, intervalMs);
+    }
+
+    function stopCadence() {
+      isCadenceActive = false;
+      if (cadenceInterval) clearInterval(cadenceInterval);
+    }
+
+    function restartCadence() {
+      stopCadence();
+      startCadence();
+    }
+
+    /* ==========================================================================
+       ISOMETRIC HELPER TIMER
+       ========================================================================== */
+    let isoTimer = null;
+    let isoSeconds = 45;
+    let isoSet = 1;
+    let isIsoRunning = false;
+
+    function toggleIsoTimer() {
+      getAudioContext();
+      const btn = document.getElementById('btn-iso-toggle');
+      if (isIsoRunning) {
+        clearInterval(isoTimer);
+        isIsoRunning = false;
+        btn.textContent = 'המשך החזקה';
+      } else {
+        isIsoRunning = true;
+        btn.textContent = 'השהה';
+        playBeep(700, 0.15);
+
+        isoTimer = setInterval(() => {
+          isoSeconds--;
+          document.getElementById('iso-timer-display').textContent = isoSeconds;
+
+          if (isoSeconds <= 0) {
+            clearInterval(isoTimer);
+            isIsoRunning = false;
+            playBeep(900, 0.3, 2);
+            isoSet++;
+            if (isoSet <= 4) {
+              alert(`סט ${isoSet - 1} הושלם! כעת 2 דקות מנוחה מלאה לפני סט ${isoSet}.`);
+              document.getElementById('iso-status-label').textContent = `מנוחה! לאחר מכן סט ${isoSet} מתוך 4`;
+            } else {
+              alert('🎉 פרוטוקול 4 סטים איזומטריים הושלם בהצלחה!');
+              document.getElementById('iso-status-label').textContent = 'הפרוטוקול הושלם!';
+            }
+            isoSeconds = 45;
+            document.getElementById('iso-timer-display').textContent = 45;
+            btn.textContent = 'התחל החזקה';
+          }
+        }, 1000);
+      }
+    }
+
+    function resetIsoTimer() {
+      if (isoTimer) clearInterval(isoTimer);
+      isIsoRunning = false;
+      isoSeconds = 45;
+      isoSet = 1;
+      document.getElementById('iso-timer-display').textContent = 45;
+      document.getElementById('iso-status-label').textContent = 'מוכן להחזקה סטטית (סט 1 מתוך 4)';
+      document.getElementById('btn-iso-toggle').textContent = 'התחל החזקה';
+    }
+
+    /* ==========================================================================
+       HSR TEMPO GUIDE
+       ========================================================================== */
+    let hsrInterval = null;
+    let isHsrActive = false;
+    let hsrSec = 0;
+
+    function toggleHsrTempo() {
+      getAudioContext();
+      const btn = document.getElementById('btn-hsr-toggle');
+      const bar = document.getElementById('hsr-visual-bar');
+      const label = document.getElementById('hsr-tempo-label');
+
+      if (isHsrActive) {
+        clearInterval(hsrInterval);
+        isHsrActive = false;
+        btn.textContent = 'הפעל קצב HSR';
+        bar.textContent = 'עמידה מוצא';
+        bar.style.background = '#fef3c7';
+        bar.style.color = '#92400e';
+        label.textContent = 'מנחה קצב מושהה';
+      } else {
+        isHsrActive = true;
+        btn.textContent = 'עצור קצב HSR';
+        hsrSec = 0;
+
+        hsrInterval = setInterval(() => {
+          hsrSec = (hsrSec + 1) % 6;
+          if (hsrSec < 3) {
+            bar.textContent = `⬆️ עלייה איטית (${hsrSec + 1}/3)`;
+            bar.style.background = '#dcfce7';
+            bar.style.color = '#166534';
+            playBeep(650, 0.08);
+          } else {
+            bar.textContent = `⬇️ ירידה מבוקרת (${hsrSec - 2}/3)`;
+            bar.style.background = '#fee2e2';
+            bar.style.color = '#991b1b';
+            playBeep(450, 0.08);
+          }
+          label.textContent = 'שמור על קצב תנועה רציף ללא ניתור או האצה';
+        }, 1000);
+      }
+    }
+
+    /* ==========================================================================
+       DATA EXPORT & IMPORT
+       ========================================================================== */
+    function exportAppData() {
+      const data = {
+        workouts: appState.workouts,
+        logs: appState.logs,
+        strengthData: appState.strengthData,
+        exportDate: new Date().toISOString()
+      };
+      const jsonStr = JSON.stringify(data, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `achilles_strength_plan_backup_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importAppData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (imported.workouts && imported.logs) {
+            appState.workouts = imported.workouts;
+            appState.logs = imported.logs;
+            if (imported.strengthData) appState.strengthData = imported.strengthData;
+            saveState();
+            alert('הנתונים יובאו בהצלחה!');
+          } else {
+            alert('מבנה הקובץ אינו תקין.');
+          }
+        } catch (err) {
+          alert('שגיאה בקריאת קובץ JSON: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetAllAppData() {
+      if (confirm('האם לאפס את כל נתוני התוכנית, אימוני הכוח והיומן לברירת המחדל?')) {
+        localStorage.removeItem('achilles_workouts_data');
+        localStorage.removeItem('achilles_logs_data');
+        localStorage.removeItem('achilles_strength_data');
+        appState.workouts = JSON.parse(JSON.stringify(DEFAULT_WORKOUTS));
+        appState.logs = JSON.parse(JSON.stringify(DEFAULT_LOGS));
+        appState.strengthData = {};
+        saveState();
+        alert('נתוני האפליקציה אופסו לברירת המחדל.');
+      }
+    }
+
+    /* ==========================================================================
+       INIT ON DOM LOAD
+       ========================================================================== */
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('log-date').value = '2026-09-16';
+
+      loadState();
+      initCountdown();
+      updateCurrentWeekBadge();
+      saveState();
+    });
+  </script>
+</body>
+</html>
