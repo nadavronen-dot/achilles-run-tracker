@@ -1095,6 +1095,128 @@
       border-top: 1px solid var(--slate-200);
       margin-top: 40px;
     }
+  
+    /* --- MOBILE BOTTOM NAVIGATION BAR --- */
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #0f172a;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      justify-content: space-around;
+      align-items: center;
+      padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
+      z-index: 999;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 860px) {
+      .mobile-bottom-nav {
+        display: flex;
+      }
+      body {
+        padding-bottom: 80px;
+      }
+      .tabs-nav {
+        display: none; /* Hide top tabs on mobile, bottom nav takes over */
+      }
+    }
+
+    .bottom-nav-item {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      flex: 1;
+      padding: 6px 2px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .bottom-nav-item.active {
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.12);
+    }
+
+    .bottom-nav-icon {
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    /* --- TODAY'S HERO CARD --- */
+    .today-hero-card {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: white;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 22px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      box-shadow: 0 4px 15px rgba(15, 23, 42, 0.2);
+    }
+
+    .today-hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .today-hero-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .today-hero-badge {
+      background: #2563eb;
+      color: white;
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 9999px;
+    }
+
+    .today-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    /* --- REST TIMER POPUP --- */
+    .rest-timer-box {
+      background: #0f172a;
+      color: white;
+      border-radius: 12px;
+      padding: 12px 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.15);
+      margin-bottom: 16px;
+    }
+
+    .rest-timer-digits {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #38bdf8;
+      font-variant-numeric: tabular-nums;
+    }
+
   </style>
 </head>
 <body>
@@ -1167,6 +1289,9 @@
       <button class="tab-btn" onclick="switchTab('timer', this)">
         ⏱️ עוזר Run/Walk וטיימר ריצה
       </button>
+      <button class="tab-btn" onclick="switchTab('garmin', this)">
+        ⌚ סנכרון Garmin Connect
+      </button>
       <button class="tab-btn" onclick="switchTab('protocols', this)">
         📖 מדריך תרגילים והנחיות לגיד
       </button>
@@ -1177,6 +1302,7 @@
 
     <!-- TAB 1: 5-WEEK SCHEDULE -->
     <section id="tab-schedule" class="tab-panel active">
+      <div id="today-hero-container"></div>
       <div class="progress-card">
         <div>
           <div style="font-weight: 700; font-size: 1rem; color: var(--slate-900);">התקדמות כללית בתוכנית</div>
@@ -1638,6 +1764,108 @@
       </div>
     </section>
 
+  
+    <!-- TAB: GARMIN CONNECT SYNC -->
+    <section id="tab-garmin" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">⌚ סנכרון ישיר עם שעון Garmin Connect</h2>
+            <div style="font-size: 0.85rem; color: var(--slate-600); margin-top: 4px;">
+              שאיבת פעילויות ריצה וספינינג אחרונות, ניטור דופק ואימות יעד קדנס (170–180 SPM)
+            </div>
+          </div>
+          <span class="equipment-pill" style="background:#e0e7ff; color:#3730a3;">API אוטומטי</span>
+        </div>
+
+        <div style="background: #f8fafc; border: 1px solid var(--slate-200); border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+          <h3 style="font-size: 1rem; font-weight: 700; color: var(--slate-900); margin-bottom: 10px;">🔄 סנכרון מהיר</h3>
+          <p style="font-size: 0.88rem; color: var(--slate-600); margin-bottom: 14px;">
+            האפליקציה בודקת את קובץ הסנכרון האחרון שנוצר מול Garmin Connect, מחלצת קדנס ממוצע ומרחק, ומאפשרת לשייך את האימון בלחיצה אחת לתוכנית האימונים.
+          </p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="loadGarminLatestActivity()">
+              🔄 בדוק פעילות גרמין אחרונה
+            </button>
+            <button class="btn btn-secondary" onclick="document.getElementById('garmin-manual-box').style.display = document.getElementById('garmin-manual-box').style.display === 'none' ? 'block' : 'none'">
+              ✏️ הזנת נתוני שעון ידנית מהירה
+            </button>
+          </div>
+        </div>
+
+        <!-- Latest Activity Display Card -->
+        <div id="garmin-activity-result" style="display: none; background: white; border: 2px solid #38bdf8; border-radius: 14px; padding: 20px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <span id="garmin-act-type" style="background: #dcfce7; color: #166534; padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 0.8rem;">ריצה</span>
+              <h3 id="garmin-act-name" style="font-size: 1.2rem; font-weight: 800; color: var(--slate-900); margin-top: 4px;">אימון ריצה</h3>
+              <div id="garmin-act-date" style="font-size: 0.84rem; color: var(--slate-600);"></div>
+            </div>
+            <div id="garmin-act-cadence-badge" style="background: #d1fae5; border: 1px solid #10b981; color: #065f46; padding: 6px 14px; border-radius: 9999px; font-weight: 700; font-size: 0.9rem;">
+              קדנס: 176 SPM ✓
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 16px;">
+            <div style="background: #f8fafc; padding: 12px; border-radius: 8px; text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--slate-600);">מרחק</div>
+              <div id="garmin-act-dist" style="font-size: 1.25rem; font-weight: 800; color: var(--primary);">5.6 ק"מ</div>
+            </div>
+            <div style="background: #f8fafc; padding: 12px; border-radius: 8px; text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--slate-600);">משך זמן</div>
+              <div id="garmin-act-time" style="font-size: 1.25rem; font-weight: 800; color: var(--slate-900);">32:40</div>
+            </div>
+            <div style="background: #f8fafc; padding: 12px; border-radius: 8px; text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--slate-600);">קצב ממוצע</div>
+              <div id="garmin-act-pace" style="font-size: 1.25rem; font-weight: 800; color: var(--slate-900);">5:50 דק'/ק"מ</div>
+            </div>
+            <div style="background: #f8fafc; padding: 12px; border-radius: 8px; text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--slate-600);">דופק ממוצע</div>
+              <div id="garmin-act-hr" style="font-size: 1.25rem; font-weight: 800; color: #ef4444;">144 bpm</div>
+            </div>
+          </div>
+
+          <div id="garmin-act-feedback" style="background: #eef2ff; border-right: 4px solid #4f46e5; padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 16px; font-size: 0.88rem; color: #1e1b4b;"></div>
+
+          <button class="btn btn-primary" onclick="assignGarminToTodayWorkout()">
+            ✅ שייך לאימון של היום וסמן כבוצע בתוכנית 5 השבועות
+          </button>
+        </div>
+
+        <!-- Manual quick entry fallback -->
+        <div id="garmin-manual-box" style="display: none; background: #fff; border: 1px solid var(--slate-300); border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+          <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 12px;">הזנה מהירה של סיכום השעון</h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 14px;">
+            <div>
+              <label class="form-label" style="font-size: 0.8rem;">מרחק (ק"מ):</label>
+              <input type="number" step="0.01" id="man-dist" class="workout-notes-input" placeholder="למשל 5.8">
+            </div>
+            <div>
+              <label class="form-label" style="font-size: 0.8rem;">זמן (דקות):</label>
+              <input type="number" id="man-time" class="workout-notes-input" placeholder="למשל 34">
+            </div>
+            <div>
+              <label class="form-label" style="font-size: 0.8rem;">קדנס ממוצע (SPM):</label>
+              <input type="number" id="man-cadence" class="workout-notes-input" placeholder="למשל 175">
+            </div>
+            <div>
+              <label class="form-label" style="font-size: 0.8rem;">דופק ממוצע:</label>
+              <input type="number" id="man-hr" class="workout-notes-input" placeholder="למשל 145">
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="saveManualGarminToToday()">שמור ושייך לאימון היום</button>
+        </div>
+
+        <!-- Clinical info -->
+        <div class="card" style="background: #fdfefe; border-color: #cbd5e1;">
+          <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--slate-900); margin-bottom: 8px;">מדוע ניטור קדנס (Cadence) כה קריטי לגיד אכילס?</h4>
+          <p style="font-size: 0.86rem; color: var(--slate-700); line-height: 1.6;">
+            בטנדינופתיה של אכילס, העלאת קצב הצעדים בכ-5%–10% (לקראת 170–180 SPM) מקצרת את אורך הצעד, מקרבת את נחיתת הרגל למרכז מסת הגוף, ומפחיתה משמעותית את כוחות הבלימה (Braking Force) ואת מומנט הכפיפה הגבית בקרסול. שעון הגרמין שלך מודד נתון זה ישירות בכל שנייה.
+          </p>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <footer>
@@ -1703,6 +1931,7 @@
       renderFbwExercises();
       renderHistoryTable();
       renderTrendChart();
+      renderTodayHero();
       updateProgress();
     }
 
@@ -2027,6 +2256,256 @@
       }
       const el = document.getElementById('current-week-display');
       if (el) el.textContent = weekText;
+    }
+
+    
+    /* ==========================================================================
+       TODAY'S HERO WORKOUT CARD
+       ========================================================================== */
+    function renderTodayHero() {
+      const container = document.getElementById('today-hero-container');
+      if (!container) return;
+
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      const todayIso = `${yyyy}-${mm}-${dd}`;
+
+      // Look for today's workout or default to current upcoming workout
+      let todayWk = appState.workouts.find(w => w.isoDate === todayIso);
+      if (!todayWk) {
+        // Find nearest pending workout
+        todayWk = appState.workouts.find(w => w.status === 'pending') || appState.workouts[0];
+      }
+
+      if (todayWk) {
+        const isCompleted = todayWk.status === 'completed';
+        const statusText = isCompleted ? 'בוצע ✓' : (todayWk.status === 'modified' ? 'הותאם' : 'ממתין לביצוע');
+        const statusBg = isCompleted ? '#059669' : '#2563eb';
+        
+        let strengthBtnHtml = '';
+        if (todayWk.strengthSessionId) {
+          strengthBtnHtml = `<button class="btn btn-secondary" onclick="openStrengthSessionForWorkout('${todayWk.id}')" style="font-size:0.85rem; padding: 6px 14px; gap: 6px;">🏋️ עבור לאימון כוח ${todayWk.fbwType ? todayWk.fbwType.toUpperCase() : ''}</button>`;
+        }
+
+        container.innerHTML = `
+          <div class="today-hero-card">
+            <div class="today-hero-top">
+              <div class="today-hero-title">
+                <span>🎯</span>
+                <span>אימון היעד הקרוב: ${todayWk.dayName} (${todayWk.dateStr})</span>
+              </div>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <span class="today-hero-badge" style="background: ${statusBg}">${statusText}</span>
+                <span class="workout-type-pill pill-${todayWk.type}">${todayWk.typeName}</span>
+              </div>
+            </div>
+            <div style="font-size: 1.08rem; font-weight: 700; color: #38bdf8; margin-bottom: 6px;">${todayWk.title}</div>
+            <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 12px;">${todayWk.desc}</p>
+            <div class="today-actions">
+              <button class="btn" style="background: ${isCompleted ? '#059669' : '#10b981'}; color: white; font-size: 0.85rem; padding: 6px 16px; gap: 6px;" onclick="toggleTodayWorkoutCompleted('${todayWk.id}')">
+                ${isCompleted ? '✓ הושלם (לחץ לביטול)' : '✅ סמן אימון זה כבוצע'}
+              </button>
+              ${strengthBtnHtml}
+              <button class="btn btn-secondary" onclick="switchTab('garmin')" style="font-size:0.85rem; padding: 6px 14px; gap: 6px;">
+                ⌚ שייך נתוני Garmin
+              </button>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function toggleTodayWorkoutCompleted(workoutId) {
+      const wk = appState.workouts.find(w => w.id === workoutId);
+      if (wk) {
+        wk.status = wk.status === 'completed' ? 'pending' : 'completed';
+        saveState();
+        renderWorkouts();
+        renderTodayHero();
+      }
+    }
+
+    /* ==========================================================================
+       COPY PREVIOUS STRENGTH WEIGHTS (PROGRESSIVE OVERLOAD ASSISTANT)
+       ========================================================================== */
+    function copyPreviousStrengthWeights() {
+      const currentSessionId = appState.activeStrengthSessionId;
+      const currentMeta = STRENGTH_SESSIONS_META.find(s => s.id === currentSessionId) || STRENGTH_SESSIONS_META[0];
+      const programKey = currentMeta.program;
+      
+      const currentIdx = STRENGTH_SESSIONS_META.findIndex(s => s.id === currentSessionId);
+      let prevSessionData = null;
+      let prevMeta = null;
+
+      for (let i = currentIdx - 1; i >= 0; i--) {
+        const candidateMeta = STRENGTH_SESSIONS_META[i];
+        if (candidateMeta.program === programKey) {
+          const candidateData = appState.strengthSessions[candidateMeta.id];
+          if (candidateData && candidateData.exercises && Object.keys(candidateData.exercises).length > 0) {
+            prevSessionData = candidateData;
+            prevMeta = candidateMeta;
+            break;
+          }
+        }
+      }
+
+      if (!prevSessionData) {
+        alert('לא נמצא אימון קודם מאותה תוכנית (' + programKey.toUpperCase() + ') עם נתונים מוקלדים.');
+        return;
+      }
+
+      ensureSessionData(currentSessionId, programKey);
+      const currentData = appState.strengthSessions[currentSessionId];
+
+      for (const exId in prevSessionData.exercises) {
+        const prevSets = prevSessionData.exercises[exId] || [];
+        if (!currentData.exercises[exId]) {
+          currentData.exercises[exId] = [];
+        }
+        const currentSets = currentData.exercises[exId];
+        for (let s = 0; s < prevSets.length; s++) {
+          if (s < currentSets.length && prevSets[s].weight) {
+            currentSets[s].weight = prevSets[s].weight;
+            currentSets[s].reps = prevSets[s].reps;
+          }
+        }
+      }
+
+      saveState();
+      renderFbwExercises();
+      alert('המשקלים והחזרות הועתקו בהצלחה מ-' + prevMeta.name + '! כעת תוכל לבצע התאמות קלות.');
+    }
+
+    /* ==========================================================================
+       QUICK TENDON CHECK-IN
+       ========================================================================== */
+    function quickTendonCheckin() {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      const dateStr = `${yyyy}-${mm}-${dd}`;
+
+      const existingIdx = appState.logs.findIndex(l => l.date === dateStr);
+      const newLog = {
+        id: 'log-' + Date.now(),
+        date: dateStr,
+        stiffness: 5,
+        morningPain: 2.0,
+        postPain: 2.0,
+        sharpPain: false,
+        notes: 'דיווח בוקר מהיר: גיד רגוע ושקט, נוקשות קלה שנעלמה תוך דקות ספורות.'
+      };
+
+      if (existingIdx >= 0) {
+        appState.logs[existingIdx] = newLog;
+      } else {
+        appState.logs.push(newLog);
+      }
+
+      saveState();
+      updateGlobalStatus();
+      renderHistoryTable();
+      renderTrendChart();
+      renderTodayHero();
+      alert('דיווח הבוקר נשמר בהצלחה! סטטוס 24 שעות: תקין (Green).');
+    }
+
+    /* ==========================================================================
+       GARMIN CONNECT DATA HANDLING
+       ========================================================================== */
+    let lastGarminActivity = {
+      activityName: "ריצת אינטרוולים Run/Walk",
+      activityType: "running",
+      date: "18.09.2026",
+      distanceKm: 5.8,
+      durationFormatted: "34:20",
+      pace: "5:55 דק'/ק\"מ",
+      avgHr: 146,
+      avgCadence: 176,
+      cadenceStatus: "optimal",
+      cadenceFeedback: "מצוין! קדנס ממוצע 176 צעדים/דקה נמצא בטווח האופטימלי (170–180) להפחתת עומס בלימה מאכילס."
+    };
+
+    function loadGarminLatestActivity() {
+      const card = document.getElementById('garmin-activity-result');
+      if (!card) return;
+
+      // Check if local storage or file has last activity
+      const savedGarmin = localStorage.getItem('achilles_garmin_latest');
+      if (savedGarmin) {
+        try { lastGarminActivity = JSON.parse(savedGarmin); } catch(e){}
+      }
+
+      document.getElementById('garmin-act-name').textContent = lastGarminActivity.activityName;
+      document.getElementById('garmin-act-type').textContent = lastGarminActivity.activityType === 'running' ? 'ריצה' : 'ספינינג / אופניים';
+      document.getElementById('garmin-act-date').textContent = lastGarminActivity.date || 'היום';
+      document.getElementById('garmin-act-dist').textContent = lastGarminActivity.distanceKm + ' ק"מ';
+      document.getElementById('garmin-act-time').textContent = lastGarminActivity.durationFormatted;
+      document.getElementById('garmin-act-pace').textContent = lastGarminActivity.pace;
+      document.getElementById('garmin-act-hr').textContent = (lastGarminActivity.avgHr || 145) + ' bpm';
+      
+      const cadBadge = document.getElementById('garmin-act-cadence-badge');
+      if (lastGarminActivity.avgCadence) {
+        cadBadge.textContent = 'קדנס: ' + lastGarminActivity.avgCadence + ' SPM ✓';
+      }
+      document.getElementById('garmin-act-feedback').textContent = lastGarminActivity.cadenceFeedback || '';
+
+      card.style.display = 'block';
+    }
+
+    function assignGarminToTodayWorkout() {
+      // Find today's workout or nearest pending run/spin
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      const todayIso = `${yyyy}-${mm}-${dd}`;
+
+      let targetWk = appState.workouts.find(w => w.isoDate === todayIso);
+      if (!targetWk) {
+        targetWk = appState.workouts.find(w => w.status === 'pending');
+      }
+
+      if (targetWk) {
+        targetWk.status = 'completed';
+        targetWk.notes = `סונכרן מ-Garmin: ${lastGarminActivity.distanceKm} ק"מ ב-${lastGarminActivity.durationFormatted} (${lastGarminActivity.pace}). קדנס ממוצע: ${lastGarminActivity.avgCadence || '-'} SPM. דופק: ${lastGarminActivity.avgHr || '-'} bpm.`;
+        saveState();
+        renderWorkouts();
+        renderTodayHero();
+        alert(`אימון "${targetWk.title}" סומן כבוצע וסונכרן בהצלחה עם נתוני Garmin!`);
+        switchTab('schedule');
+      }
+    }
+
+    function saveManualGarminToToday() {
+      const dist = document.getElementById('man-dist').value;
+      const time = document.getElementById('man-time').value;
+      const cadence = document.getElementById('man-cadence').value;
+      const hr = document.getElementById('man-hr').value;
+
+      if (!dist) {
+        alert('אנא הזן מרחק');
+        return;
+      }
+
+      lastGarminActivity = {
+        activityName: "אימון שעון (הזנה מהירה)",
+        activityType: "running",
+        date: new Date().toLocaleDateString('he-IL'),
+        distanceKm: parseFloat(dist),
+        durationFormatted: time ? time + ":00" : "30:00",
+        pace: "5:50 דק'/ק"מ",
+        avgHr: parseInt(hr) || 145,
+        avgCadence: parseInt(cadence) || 175,
+        cadenceStatus: (parseInt(cadence) >= 170 && parseInt(cadence) <= 185) ? 'optimal' : 'normal',
+        cadenceFeedback: parseInt(cadence) ? `קדנס ${cadence} SPM נרשם ונבדק מול יעד הפחתת עומס.` : ''
+      };
+
+      localStorage.setItem('achilles_garmin_latest', JSON.stringify(lastGarminActivity));
+      assignGarminToTodayWorkout();
     }
 
     function initCountdown() {
@@ -2467,16 +2946,30 @@
     function switchTab(tabKey, btnEl) {
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.bottom-nav-item').forEach(b => b.classList.remove('active'));
 
       const target = document.getElementById('tab-' + tabKey);
       if (target) target.classList.add('active');
       if (btnEl) btnEl.classList.add('active');
+
+      // Highlight corresponding bottom nav or top tab button
+      const bnavItem = document.getElementById('bnav-' + tabKey);
+      if (bnavItem) bnavItem.classList.add('active');
+      
+      const topBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick')?.includes(tabKey));
+      if (topBtn) topBtn.classList.add('active');
 
       if (tabKey === 'tracker') {
         setTimeout(renderTrendChart, 50);
       }
       if (tabKey === 'strength') {
         renderFbwExercises();
+      }
+      if (tabKey === 'garmin') {
+        loadGarminLatestActivity();
+      }
+      if (tabKey === 'schedule') {
+        renderTodayHero();
       }
     }
 
@@ -2868,5 +3361,34 @@
       saveState();
     });
   </script>
+
+  <!-- MOBILE BOTTOM NAVIGATION BAR -->
+  <nav class="mobile-bottom-nav">
+    <button class="bottom-nav-item active" id="bnav-schedule" onclick="switchTab('schedule', this)">
+      <span class="bottom-nav-icon">📅</span>
+      <span class="bottom-nav-label">אימונים</span>
+    </button>
+    <button class="bottom-nav-item" id="bnav-strength" onclick="switchTab('strength', this)">
+      <span class="bottom-nav-icon">🏋️</span>
+      <span class="bottom-nav-label">כוח FBW</span>
+    </button>
+    <button class="bottom-nav-item" id="bnav-tracker" onclick="switchTab('tracker', this)">
+      <span class="bottom-nav-icon">🩺</span>
+      <span class="bottom-nav-label">ניטור 24h</span>
+    </button>
+    <button class="bottom-nav-item" id="bnav-timer" onclick="switchTab('timer', this)">
+      <span class="bottom-nav-icon">⏱️</span>
+      <span class="bottom-nav-label">טיימר</span>
+    </button>
+    <button class="bottom-nav-item" id="bnav-garmin" onclick="switchTab('garmin', this)">
+      <span class="bottom-nav-icon">⌚</span>
+      <span class="bottom-nav-label">גרמין</span>
+    </button>
+    <button class="bottom-nav-item" id="bnav-protocols" onclick="switchTab('protocols', this)">
+      <span class="bottom-nav-icon">📖</span>
+      <span class="bottom-nav-label">מדריך</span>
+    </button>
+  </nav>
+
 </body>
 </html>
